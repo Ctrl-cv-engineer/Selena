@@ -1,5 +1,6 @@
 """Local API bridge and frontend launcher for DialogueSystem."""
 
+import glob
 import json
 import logging
 import os
@@ -209,11 +210,47 @@ class DialogueFrontendRuntime:
             return
 
         node_path = shutil.which("node")
-        vite_entry = os.path.join(PROJECT_ROOT, "node_modules", "vite", "bin", "vite.js")
         frontend_config_path = os.path.join(self.frontend_root, "vite.config.ts")
+        vite_entry_candidates = [
+            os.path.join(self.frontend_root, "node_modules", "vite", "bin", "vite.js"),
+            os.path.join(PROJECT_ROOT, "node_modules", "vite", "bin", "vite.js"),
+        ]
+        vite_entry_candidates.extend(
+            sorted(
+                glob.glob(
+                    os.path.join(
+                        self.frontend_root,
+                        "node_modules",
+                        ".pnpm",
+                        "vite@*",
+                        "node_modules",
+                        "vite",
+                        "bin",
+                        "vite.js",
+                    )
+                )
+            )
+        )
+        vite_entry_candidates.extend(
+            sorted(
+                glob.glob(
+                    os.path.join(
+                        PROJECT_ROOT,
+                        "node_modules",
+                        ".pnpm",
+                        "vite@*",
+                        "node_modules",
+                        "vite",
+                        "bin",
+                        "vite.js",
+                    )
+                )
+            )
+        )
+        vite_entry = next((path for path in vite_entry_candidates if os.path.exists(path)), None)
 
         command = None
-        if node_path and os.path.exists(vite_entry):
+        if node_path and vite_entry:
             command = [
                 node_path,
                 vite_entry,
@@ -226,6 +263,20 @@ class DialogueFrontendRuntime:
                 "--strictPort",
             ]
         else:
+            vite_cmd = os.path.join(self.frontend_root, "node_modules", ".bin", "vite.CMD")
+            if os.path.exists(vite_cmd):
+                command = [
+                    vite_cmd,
+                    "--config",
+                    frontend_config_path,
+                    "--host",
+                    host,
+                    "--port",
+                    str(port),
+                    "--strictPort",
+                ]
+
+        if command is None:
             package_manager = str(self.config.get("package_manager", "pnpm") or "pnpm").strip()
             package_manager_path = shutil.which(f"{package_manager}.cmd") or shutil.which(package_manager)
             if package_manager_path:
