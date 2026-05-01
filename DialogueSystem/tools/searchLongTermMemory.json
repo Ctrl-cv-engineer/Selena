@@ -1,0 +1,44 @@
+{
+  "type": "function",
+  "function": {
+    "name": "searchLongTermMemory",
+    "description": "Search long-term memory (semantic memory + archived topics). Supports optional date-range, kind and sort filters. For relative dates like 'yesterday' / 'last week', first call getTime to obtain the current date, then pass absolute ISO dates in SinceDate/UntilDate.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Query": {
+          "type": "string",
+          "description": "Semantic query text. Required."
+        },
+        "IncludeHistorical": {
+          "type": "boolean",
+          "description": "Whether to include memories marked as 'historical' (superseded/invalidated). Default false."
+        },
+        "Limit": {
+          "type": "integer",
+          "description": "Maximum results to return (1-50). Default 8."
+        },
+        "SinceDate": {
+          "type": "string",
+          "description": "Optional lower bound (inclusive) for memory timestamp. Accepts 'YYYY-MM-DD' or ISO datetime. Leave empty for no lower bound."
+        },
+        "UntilDate": {
+          "type": "string",
+          "description": "Optional upper bound (exclusive) for memory timestamp. Accepts 'YYYY-MM-DD' (interpreted as end-of-day, i.e. next day 00:00) or ISO datetime. Leave empty for no upper bound."
+        },
+        "MemoryKind": {
+          "type": "string",
+          "enum": ["all", "atomic_memory"],
+          "description": "Filter by memory kind. 'atomic_memory' for semantic facts (default), 'all' for all kinds. Topic summaries are searched via searchFullText / listTopicsByDate instead."
+        },
+        "SortBy": {
+          "type": "string",
+          "enum": ["relevance", "recency"],
+          "description": "Result ordering. 'relevance' keeps rerank scoring (default). 'recency' skips rerank and sorts by timestamp descending — preferred when filtering by date."
+        }
+      },
+      "required": ["Query"],
+      "additionalProperties": false
+    }
+  }
+}

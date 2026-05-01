@@ -1,0 +1,32 @@
+{
+  "type": "function",
+  "function": {
+    "name": "resolveToolApproval",
+    "description": "Resolve a pending tool-authorization request after the user has replied. Use this only when the conversation context already contains a pending approval request and you have enough information to decide whether the user approved or rejected it. If the user's intent is still unclear, ask a follow-up question with askUser instead of guessing.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "ApprovalId": {
+          "type": "string",
+          "description": "The approval_id of the pending authorization request."
+        },
+        "Decision": {
+          "type": "string",
+          "enum": ["approved", "rejected"],
+          "description": "Whether the user approved or rejected the pending tool call."
+        }
+      },
+      "required": ["ApprovalId", "Decision"],
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "core",
+    "risk_level": "safe",
+    "admin_only": false,
+    "requires_approval": false,
+    "backend": "direct",
+    "supports_checkpoint": false,
+    "supports_redaction": true
+  }
+}

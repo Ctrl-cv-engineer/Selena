@@ -1,0 +1,26 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserType",
+    "description": "Type text into a text-editable element in the visible Google Chrome page by using a Ref returned from browserSnapshot.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Ref": {
+          "type": "string",
+          "description": "The ref id of the target text field, for example e5."
+        },
+        "Text": {
+          "type": "string",
+          "description": "The text to enter into the target field."
+        },
+        "Submit": {
+          "type": "boolean",
+          "description": "Whether to also submit the field or form after typing."
+        }
+      },
+      "required": ["Ref", "Text"],
+      "additionalProperties": false
+    }
+  }
+}

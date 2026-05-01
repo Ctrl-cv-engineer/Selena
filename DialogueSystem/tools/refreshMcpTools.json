@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "refreshMcpTools",
+    "description": "Reload enabled MCP servers and refresh their runtime-discovered tool registrations.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browseSkillMarketplace",
+    "description": "Browse a remote skill registry or list locally installed skills available for export. Provide a RegistryUrl to browse remote skills, or omit it to list local skills.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "RegistryUrl": {
+          "type": "string",
+          "description": "Optional. URL of a remote skill registry (must serve an index.json). Omit to list local skills."
+        },
+        "Query": {
+          "type": "string",
+          "description": "Optional. Filter skills by name or description keyword."
+        },
+        "InstallSkillName": {
+          "type": "string",
+          "description": "Optional. If provided along with RegistryUrl, download and install this skill from the registry."
+        },
+        "Overwrite": {
+          "type": "boolean",
+          "description": "Whether to overwrite an existing skill when installing. Default false."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  }
+}

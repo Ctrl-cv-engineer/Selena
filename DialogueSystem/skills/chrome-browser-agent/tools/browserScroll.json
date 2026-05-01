@@ -1,0 +1,21 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserScroll",
+    "description": "Scroll the current visible Google Chrome page up or down.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Direction": {
+          "type": "string",
+          "description": "Scroll direction. Use 'down' or 'up'."
+        },
+        "Amount": {
+          "type": "integer",
+          "description": "Approximate number of pixels to scroll. Defaults to 800."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

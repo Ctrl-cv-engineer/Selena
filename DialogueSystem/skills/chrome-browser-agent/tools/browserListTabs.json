@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserListTabs",
+    "description": "List visible Chrome tabs, including their tab ids, titles, URLs, and which tab is currently active for browser automation.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

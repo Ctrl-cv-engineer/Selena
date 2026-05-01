@@ -1,0 +1,27 @@
+{
+  "type": "function",
+  "function": {
+    "name": "askUser",
+    "description": "Pause the current Agent execution and ask the user a question. Use this when you need the user to make a choice, confirm an action, or provide additional information before proceeding. The Agent loop will suspend until the user responds, then resume with the user's answer. Do NOT use this for rhetorical questions — only for cases where you genuinely cannot proceed without user input.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Question": {
+          "type": "string",
+          "description": "The question or prompt to show the user. Be specific about what choices are available."
+        },
+        "Options": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Optional list of suggested choices for the user. The user can also reply freely."
+        },
+        "Context": {
+          "type": "string",
+          "description": "Optional brief context about what the Agent is currently doing, shown to the user alongside the question."
+        }
+      },
+      "required": ["Question"],
+      "additionalProperties": false
+    }
+  }
+}

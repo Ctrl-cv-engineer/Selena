@@ -1,0 +1,31 @@
+{
+  "type": "function",
+  "function": {
+    "name": "readLocalFile",
+    "description": "Read a local text file from an allowed workspace path.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Path": {
+          "type": "string",
+          "description": "Absolute or workspace-relative path to a text file."
+        },
+        "MaxChars": {
+          "type": "integer",
+          "description": "Optional maximum number of characters to return."
+        }
+      },
+      "required": ["Path"],
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "file_read",
+    "risk_level": "guarded",
+    "admin_only": false,
+    "requires_approval": false,
+    "backend": "direct",
+    "supports_checkpoint": false,
+    "supports_redaction": true
+  }
+}

@@ -1,0 +1,69 @@
+{
+    "SubAgentPolicy": {
+        "max_depth": 1,
+        "allow_admin_tools": false,
+        "max_concurrent_tasks": 2,
+        "max_queue_size": 16,
+        "default_priority": 0,
+        "result_cache_enabled": true,
+        "result_cache_ttl_seconds": 600,
+        "result_cache_max_entries": 64,
+        "toolsets": null,
+        "agent_type_configs": {
+            "general": {
+                "toolsets": ["core", "memory", "browser", "schedule", "file_read"],
+                "max_tool_calls": 6,
+                "resource_limits": {
+                    "max_file_reads": 50,
+                    "max_file_writes": 0,
+                    "max_network_calls": 10
+                }
+            },
+            "explore": {
+                "toolsets": ["core", "file_read"],
+                "max_tool_calls": 8,
+                "resource_limits": {
+                    "max_file_reads": 100,
+                    "max_file_writes": 0,
+                    "max_network_calls": 0
+                }
+            },
+            "research": {
+                "toolsets": ["core", "memory", "browser", "file_read"],
+                "max_tool_calls": 20,
+                "resource_limits": {
+                    "max_file_reads": 200,
+                    "max_file_writes": 0,
+                    "max_network_calls": 20
+                }
+            },
+            "plan": {
+                "toolsets": ["core", "memory", "file_read"],
+                "max_tool_calls": 10,
+                "resource_limits": {
+                    "max_file_reads": 50,
+                    "max_file_writes": 0,
+                    "max_network_calls": 5
+                }
+            },
+            "review": {
+                "toolsets": ["core", "file_read"],
+                "max_tool_calls": 15,
+                "resource_limits": {
+                    "max_file_reads": 150,
+                    "max_file_writes": 0,
+                    "max_network_calls": 0
+                }
+            },
+            "test": {
+                "toolsets": ["core", "file_read", "terminal"],
+                "max_tool_calls": 12,
+                "resource_limits": {
+                    "max_file_reads": 80,
+                    "max_file_writes": 5,
+                    "max_network_calls": 0
+                }
+            }
+        }
+    }
+}

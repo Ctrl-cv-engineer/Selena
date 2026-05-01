@@ -1,0 +1,64 @@
+{
+  "type": "function",
+  "function": {
+    "name": "generateDocument",
+    "description": "Generate a document file (PDF, DOCX, or PPTX) from structured content. Returns the output file path.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Format": {
+          "type": "string",
+          "enum": ["pdf", "docx", "pptx"],
+          "description": "Output document format."
+        },
+        "Content": {
+          "type": "object",
+          "description": "Structured document content. Must include 'title' (string) and 'sections' (array of {heading, body, level?}). Optional: 'author', 'date'.",
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "Document or presentation title."
+            },
+            "author": {
+              "type": "string",
+              "description": "Optional author name."
+            },
+            "date": {
+              "type": "string",
+              "description": "Optional date string."
+            },
+            "sections": {
+              "type": "array",
+              "description": "Array of content sections. Each has 'heading' and 'body', optional 'level' (1-3).",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "heading": {
+                    "type": "string",
+                    "description": "Section heading or slide title."
+                  },
+                  "body": {
+                    "type": "string",
+                    "description": "Section body text. Use newlines to separate paragraphs or bullet points."
+                  },
+                  "level": {
+                    "type": "integer",
+                    "description": "Heading level (1-3). Default 1."
+                  }
+                },
+                "required": ["heading", "body"]
+              }
+            }
+          },
+          "required": ["title", "sections"]
+        },
+        "OutputPath": {
+          "type": "string",
+          "description": "Optional. Custom output file path. Defaults to the project data directory."
+        }
+      },
+      "required": ["Format", "Content"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "type": "function",
+  "function": {
+    "name": "updateScheduleTask",
+    "description": "Update an existing schedule task in the local SQLite reminder database.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskId": {
+          "type": "integer",
+          "description": "Existing task id."
+        },
+        "TaskDate": {
+          "type": "string",
+          "description": "Optional new task date in YYYY-MM-DD format."
+        },
+        "ReminderTime": {
+          "type": "string",
+          "description": "Optional new reminder time in YYYY-MM-DD HH:MM[:SS] format, or HH:MM[:SS] when TaskDate is also provided."
+        },
+        "TaskContent": {
+          "type": "string",
+          "description": "Optional replacement task content."
+        },
+        "ReminderStatus": {
+          "type": "string",
+          "enum": ["已提醒", "未提醒"],
+          "description": "Optional new reminder status."
+        },
+        "TaskStatus": {
+          "type": "string",
+          "enum": ["已完成", "未完成", "延迟", "取消"],
+          "description": "Optional new task status."
+        }
+      },
+      "required": ["TaskId"],
+      "additionalProperties": false
+    }
+  }
+}

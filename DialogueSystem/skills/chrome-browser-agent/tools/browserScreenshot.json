@@ -1,0 +1,21 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserScreenshot",
+    "description": "Capture a screenshot of the current visible Chrome page. Use this only as optional auxiliary evidence when the model can interpret images.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "FullPage": {
+          "type": "boolean",
+          "description": "Whether to capture beyond the current viewport when possible."
+        },
+        "FileName": {
+          "type": "string",
+          "description": "Optional file name for the saved screenshot."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

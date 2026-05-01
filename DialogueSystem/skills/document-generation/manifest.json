@@ -1,0 +1,19 @@
+{
+  "name": "document-generation",
+  "version": "1.0.0",
+  "enabled": true,
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "description": "Generate PDF, DOCX, and PPTX documents from structured content.",
+  "when_to_use": [
+    "Use this skill when the user asks to create, generate, or export a document in PDF, DOCX, or PPTX format.",
+    "Use this skill when the user wants to format collected information into a professional document."
+  ],
+  "intent_examples": [
+    "帮我生成一份PDF报告",
+    "把这些内容做成PPT",
+    "导出一个Word文档",
+    "create a document with these sections",
+    "generate a presentation from this outline"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "type": "function",
+  "function": {
+    "name": "toolSearch",
+    "description": "Fetch the full JSONSchema of deferred tools so they become callable. Deferred tools appear only by name+description in the 'Deferred tools' system reminder; their parameter schema is NOT loaded. Use select:name1,name2 to fetch specific tools, or pass keywords (e.g. 'browser navigate', 'schedule') to rank by name/description match. Once loaded, a tool stays callable for the rest of this Agent turn. The runtime only activates a small batch of matched deferred tools at a time to keep the next LLM request stable, so narrow broad queries and load additional tools in smaller follow-up batches when needed. Do NOT call toolSearch for a tool that is already in the current tools list.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Query": {
+          "type": "string",
+          "description": "Either 'select:name1,name2,...' to fetch exact tools by name, or space-separated keywords to search tool name+description. Prefer select: when the exact tool name is known."
+        },
+        "MaxResults": {
+          "type": "integer",
+          "description": "Maximum keyword-search matches to return. Ignored for select: queries. Defaults to 5."
+        }
+      },
+      "required": ["Query"],
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "core",
+    "risk_level": "safe",
+    "admin_only": false,
+    "requires_approval": false,
+    "backend": "direct",
+    "supports_checkpoint": false,
+    "supports_redaction": false
+  }
+}

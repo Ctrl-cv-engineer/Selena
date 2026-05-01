@@ -1,0 +1,20 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1" y="1" width="30" height="30" rx="10" fill="url(#bg)"/>
+<rect x="1" y="1" width="30" height="30" rx="10" stroke="#D7D8FF" stroke-width="1.5"/>
+<ellipse cx="16" cy="9" rx="3" ry="5.1" fill="#5B4DE8"/>
+<ellipse cx="11.2" cy="12.9" rx="3.2" ry="5.8" transform="rotate(-34 11.2 12.9)" fill="#4A41C8"/>
+<ellipse cx="20.8" cy="12.9" rx="3.2" ry="5.8" transform="rotate(34 20.8 12.9)" fill="#6F66F3"/>
+<ellipse cx="12.4" cy="17.7" rx="2.5" ry="4" transform="rotate(16 12.4 17.7)" fill="#8F86FF"/>
+<ellipse cx="19.6" cy="17.7" rx="2.5" ry="4" transform="rotate(-16 19.6 17.7)" fill="#9A92FF"/>
+<circle cx="16" cy="15.4" r="1.5" fill="#FFD15C"/>
+<path d="M15.2 17.3C16 19.1 16.4 21.4 16.4 24.6" stroke="#1F9D78" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M16.8 17.3C16 19.1 15.6 21.4 15.6 24.6" stroke="#4CC08D" stroke-width="2.1" stroke-linecap="round"/>
+<path d="M15.7 21C13.3 20.2 11.6 20.5 9.9 22.4" stroke="#67C89B" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M16.3 21C18.7 20.2 20.4 20.5 22.1 22.4" stroke="#67C89B" stroke-width="1.8" stroke-linecap="round"/>
+<defs>
+<linearGradient id="bg" x1="5" y1="4" x2="27" y2="28" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F4F0FF"/>
+<stop offset="1" stop-color="#EFFBF6"/>
+</linearGradient>
+</defs>
+</svg>

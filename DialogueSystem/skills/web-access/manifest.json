@@ -1,0 +1,24 @@
+{
+  "name": "web-access",
+  "version": "2.1.0",
+  "enabled": true,
+  "description": "Use Kimi built-in web search to retrieve fresh public-web information. This is the preferred way to look up facts, news, prices, or any text-based knowledge from the internet.",
+  "when_to_use": [
+    "Use this skill for current facts, recent events, prices, schedules, or when the user explicitly asks to search online.",
+    "Use this skill when the answer should be verified against external sources instead of relying only on memory.",
+    "This is the FIRST CHOICE for any internet information retrieval. Do NOT open a browser to search for information.",
+    "This capability is already registered as a builtin tool. Do not browse the filesystem to look for it."
+  ],
+  "when_not_to_use": [
+    "Do NOT use this skill when the user needs to interact with a visible web page (e.g., play music, fill a form, click buttons, log in to a website).",
+    "For browser interaction tasks, use chrome-browser-agent instead."
+  ],
+  "intent_examples": [
+    "help me check the latest news",
+    "search the web for this information",
+    "please verify this online for me",
+    "今天有什么新闻",
+    "帮我查一下这个概念",
+    "XX 的价格是多少"
+  ]
+}

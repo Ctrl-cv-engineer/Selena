@@ -1,0 +1,22 @@
+{
+  "type": "function",
+  "function": {
+    "name": "searchFullText",
+    "description": "Search archived topic summaries using exact keyword matching (FTS5). Use this when looking for specific terms, names, or phrases that vector search may miss. Complements the semantic searchLongTermMemory tool.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Query": {
+          "type": "string",
+          "description": "Keywords to search for in archived topic summaries."
+        },
+        "Limit": {
+          "type": "integer",
+          "description": "Maximum number of results to return. Default 10, max 50."
+        }
+      },
+      "required": ["Query"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "function",
+  "function": {
+    "name": "waitForDelegatedTasks",
+    "description": "Wait on multiple delegated sub-agent tasks at once. Returns when all tasks finish, any task needs external input, or the timeout is reached.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskIds": {
+          "type": "array",
+          "description": "Delegated task ids to wait on together.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "TimeoutSeconds": {
+          "type": "number",
+          "description": "Optional wait timeout in seconds."
+        },
+        "PollIntervalSeconds": {
+          "type": "number",
+          "description": "Optional polling interval in seconds."
+        }
+      },
+      "required": ["TaskIds"],
+      "additionalProperties": false
+    }
+  }
+}

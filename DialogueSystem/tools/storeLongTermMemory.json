@@ -1,0 +1,34 @@
+{
+  "type": "function",
+  "function": {
+    "name": "storeLongTermMemory",
+    "description": "Persist an explicit item into the existing long-term semantic memory store.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Text": {
+          "type": "string",
+          "description": "The memory text to store."
+        },
+        "PersonalizedText": {
+          "type": "string",
+          "description": "Optional user-facing phrasing."
+        },
+        "TextType": {
+          "type": "string",
+          "description": "Optional memory category."
+        },
+        "Importance": {
+          "type": "number",
+          "description": "Optional importance score between 0 and 1."
+        },
+        "TTLDays": {
+          "type": "integer",
+          "description": "Optional TTL in days."
+        }
+      },
+      "required": ["Text"],
+      "additionalProperties": false
+    }
+  }
+}

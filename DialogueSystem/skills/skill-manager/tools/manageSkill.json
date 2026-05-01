@@ -1,0 +1,67 @@
+{
+  "type": "function",
+  "function": {
+    "name": "manageSkill",
+    "description": "Create or update a DialogueSystem skill by writing its manifest, SKILL.md instructions, and optional tool definitions. Runtime code is disabled for managed skills.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "SkillName": {
+          "type": "string",
+          "description": "The skill name."
+        },
+        "Description": {
+          "type": "string",
+          "description": "A short skill description."
+        },
+        "WhenToUse": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional usage guidelines."
+        },
+        "IntentExamples": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional example intents."
+        },
+        "ToolDefinitions": {
+          "type": "array",
+          "items": { "type": "object" },
+          "description": "Tool definition objects."
+        },
+        "SkillInstructions": {
+          "type": "string",
+          "description": "Optional SKILL.md body instructions. If omitted, instructions are generated from description, usage rules, examples, and tools."
+        },
+        "RuntimeCode": {
+          "type": "string",
+          "description": "Deprecated and disabled. Do not provide runtime.py source code for managed skills."
+        },
+        "Enabled": {
+          "type": "boolean",
+          "description": "Whether the skill should be enabled."
+        },
+        "AllowedTools": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional tool names that should become pre-approved while this skill is activated."
+        },
+        "DisableModelInvocation": {
+          "type": "boolean",
+          "description": "If true, the model cannot auto-activate this skill unless the user explicitly names it."
+        },
+        "UserInvocable": {
+          "type": "boolean",
+          "description": "Whether the skill should be exposed for direct user invocation surfaces."
+        },
+        "Paths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional workspace path patterns that limit when the skill may auto-activate."
+        }
+      },
+      "required": ["SkillName", "Description"],
+      "additionalProperties": false
+    }
+  }
+}

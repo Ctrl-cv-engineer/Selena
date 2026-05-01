@@ -1,0 +1,34 @@
+{
+  "name": "chrome-browser-agent",
+  "version": "1.2.0",
+  "enabled": true,
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "description": "Use visible Google Chrome automation as a general browser agent. This skill can navigate or search, inspect pages via text snapshots, manage tabs, wait for async changes, send key presses, and optionally capture screenshots.",
+  "when_to_use": [
+    "Use this skill ONLY when the task requires actively controlling a visible browser page: playing music, filling forms, clicking buttons, logging in, taking screenshots, or any other interactive web operation.",
+    "Call browserSnapshot after navigation and again after major page changes so later actions use fresh refs.",
+    "Prefer browserClick and browserType with refs from browserSnapshot, rather than guessing selectors or pretending to know the page structure.",
+    "Prefer browserWait over blind repeated snapshots when the page is loading, streaming, or reacting asynchronously.",
+    "Use browserListTabs/browserSelectTab/browserCloseTab when multi-tab state matters.",
+    "Use browserScreenshot only as optional auxiliary evidence when the current model supports image input; the text path must remain sufficient without it.",
+    "This is the only local browser-control skill kept in DialogueSystem; use it for all visible Google Chrome actions."
+  ],
+  "when_not_to_use": [
+    "Do NOT use this skill just to search for information or look up facts. Use web-access (webSearch) instead.",
+    "If the user's request can be answered with text alone, do NOT open a browser."
+  ],
+  "intent_examples": [
+    "用 Google Chrome 打开 GitHub 并看看当前页面有哪些可点元素",
+    "在可见浏览器里搜索 OpenAI API docs 然后点击结果",
+    "帮我打开网站后读取页面，再点登录按钮",
+    "在浏览器当前页面找到搜索框并输入关键词",
+    "滚动当前页面，然后重新给我一份页面快照",
+    "打开新标签页后切回原标签页继续操作",
+    "等待页面提示文案出现后再点击下一步",
+    "按 Enter 或 Ctrl+L 这类快捷键推进浏览器流程",
+    "回到上一页并再次查看页面内容",
+    "播放网易云音乐",
+    "打开 B 站播放视频"
+  ]
+}

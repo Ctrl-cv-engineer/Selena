@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "deleteSkill",
+    "description": "Delete an installed DialogueSystem skill directory by skill name.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "SkillName": {
+          "type": "string",
+          "description": "The skill name to remove."
+        }
+      },
+      "required": ["SkillName"],
+      "additionalProperties": false
+    }
+  }
+}

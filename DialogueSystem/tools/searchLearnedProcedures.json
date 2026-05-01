@@ -1,0 +1,22 @@
+{
+  "type": "function",
+  "function": {
+    "name": "searchLearnedProcedures",
+    "description": "Search previously learned operation shortcuts (e.g. URLs, tool sequences) that can be reused for the current task. Call this BEFORE starting a multi-step browser or tool operation to check if a known shortcut exists. Results are historical references — you still need to actually execute the tools.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Query": {
+          "type": "string",
+          "description": "Describe the task you want to perform, e.g. '播放网易云音乐' or '打开GitHub'."
+        },
+        "Limit": {
+          "type": "integer",
+          "description": "Maximum results to return (1-10). Default 3."
+        }
+      },
+      "required": ["Query"],
+      "additionalProperties": false
+    }
+  }
+}

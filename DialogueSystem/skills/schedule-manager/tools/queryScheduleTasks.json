@@ -1,0 +1,35 @@
+{
+  "type": "function",
+  "function": {
+    "name": "queryScheduleTasks",
+    "description": "Read schedule tasks from the local SQLite reminder database.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskId": {
+          "type": "integer",
+          "description": "Optional exact task id to fetch."
+        },
+        "TaskDate": {
+          "type": "string",
+          "description": "Optional task date filter in YYYY-MM-DD format."
+        },
+        "ReminderStatus": {
+          "type": "string",
+          "enum": ["已提醒", "未提醒"],
+          "description": "Optional reminder status filter."
+        },
+        "TaskStatus": {
+          "type": "string",
+          "enum": ["已完成", "未完成", "延迟", "取消"],
+          "description": "Optional task status filter."
+        },
+        "Limit": {
+          "type": "integer",
+          "description": "Maximum number of tasks to return."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

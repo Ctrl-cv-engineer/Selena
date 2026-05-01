@@ -1,0 +1,22 @@
+{
+  "type": "function",
+  "function": {
+    "name": "importSkill",
+    "description": "Import a skill from a local directory, .zip archive, or URL into the skills directory. The skill must contain a valid SKILL.md conforming to the agentskills.io specification.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Source": {
+          "type": "string",
+          "description": "Path to a local skill directory, .zip archive, or a URL (http/https) pointing to a .zip to import."
+        },
+        "Overwrite": {
+          "type": "boolean",
+          "description": "Whether to overwrite an existing skill with the same name. Default false."
+        }
+      },
+      "required": ["Source"],
+      "additionalProperties": false
+    }
+  }
+}

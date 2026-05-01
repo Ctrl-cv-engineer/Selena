@@ -1,0 +1,73 @@
+{
+  "type": "function",
+  "function": {
+    "name": "delegateTasksParallel",
+    "description": "Create multiple delegated sub-agent tasks in parallel and optionally wait for the batch. Use when several subtasks are independent and can be fanned out together.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Tasks": {
+          "type": "array",
+          "description": "List of delegated task specs to launch in parallel.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Task": {
+                "type": "string",
+                "description": "Clear task description for this delegated child task."
+              },
+              "AgentType": {
+                "type": "string",
+                "description": "Optional agent specialization for this child task."
+              },
+              "Context": {
+                "type": "object",
+                "description": "Optional structured context for this child task."
+              },
+              "Model": {
+                "type": "string",
+                "description": "Optional model override for this child task."
+              },
+              "MaxToolCalls": {
+                "type": "integer",
+                "description": "Optional tool-call budget for this child task."
+              },
+              "TimeoutSeconds": {
+                "type": "number",
+                "description": "Optional timeout budget for this child task."
+              },
+              "Priority": {
+                "type": "integer",
+                "description": "Optional task priority for this child task."
+              },
+              "UseCache": {
+                "type": "boolean",
+                "description": "Optional cache toggle for this child task."
+              }
+            },
+            "required": ["Task"],
+            "additionalProperties": false
+          }
+        },
+        "GroupLabel": {
+          "type": "string",
+          "description": "Optional human-readable label for this delegated task batch."
+        },
+        "WaitForCompletion": {
+          "type": "boolean",
+          "description": "When true, wait until all delegated tasks finish, a task needs external input, or the timeout is reached."
+        },
+        "TimeoutSeconds": {
+          "type": "number",
+          "description": "Optional batch wait timeout in seconds when WaitForCompletion is true."
+        },
+        "PollIntervalSeconds": {
+          "type": "number",
+          "description": "Optional polling interval in seconds when WaitForCompletion is true."
+        }
+      },
+      "required": ["Tasks"],
+      "additionalProperties": false
+    }
+  }
+}

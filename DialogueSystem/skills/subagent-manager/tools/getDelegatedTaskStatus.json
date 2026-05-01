@@ -1,0 +1,30 @@
+{
+  "type": "function",
+  "function": {
+    "name": "getDelegatedTaskStatus",
+    "description": "Check the status and current result of a delegated sub-agent task.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskId": {
+          "type": "string",
+          "description": "The delegated task id returned by delegateTask."
+        },
+        "WaitForCompletion": {
+          "type": "boolean",
+          "description": "When true, wait briefly in the runtime until the delegated task finishes or the timeout is reached."
+        },
+        "TimeoutSeconds": {
+          "type": "number",
+          "description": "Optional wait timeout in seconds when WaitForCompletion is true."
+        },
+        "PollIntervalSeconds": {
+          "type": "number",
+          "description": "Optional polling interval in seconds when WaitForCompletion is true."
+        }
+      },
+      "required": ["TaskId"],
+      "additionalProperties": false
+    }
+  }
+}

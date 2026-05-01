@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserGoBack",
+    "description": "Go back one step in the current visible Google Chrome page history.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

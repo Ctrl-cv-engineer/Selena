@@ -1,0 +1,36 @@
+{
+  "type": "function",
+  "function": {
+    "name": "createScheduleTask",
+    "description": "Create a new schedule task in the local SQLite reminder database.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskDate": {
+          "type": "string",
+          "description": "Task date in YYYY-MM-DD format."
+        },
+        "ReminderTime": {
+          "type": "string",
+          "description": "Reminder time in YYYY-MM-DD HH:MM[:SS] format, or HH:MM[:SS] when TaskDate is provided."
+        },
+        "TaskContent": {
+          "type": "string",
+          "description": "What the assistant should remind the user about."
+        },
+        "ReminderStatus": {
+          "type": "string",
+          "enum": ["已提醒", "未提醒"],
+          "description": "Reminder delivery status. Usually use 未提醒 when creating a new task."
+        },
+        "TaskStatus": {
+          "type": "string",
+          "enum": ["已完成", "未完成", "延迟", "取消"],
+          "description": "Current task execution status. Usually use 未完成 for a new task."
+        }
+      },
+      "required": ["TaskDate", "ReminderTime", "TaskContent"],
+      "additionalProperties": false
+    }
+  }
+}

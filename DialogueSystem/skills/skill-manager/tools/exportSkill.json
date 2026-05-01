@@ -1,0 +1,22 @@
+{
+  "type": "function",
+  "function": {
+    "name": "exportSkill",
+    "description": "Export an installed skill as a portable .zip archive that can be shared or imported elsewhere.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "SkillName": {
+          "type": "string",
+          "description": "Name of the skill to export."
+        },
+        "OutputPath": {
+          "type": "string",
+          "description": "Optional. File path for the output .zip. Defaults to a temp directory."
+        }
+      },
+      "required": ["SkillName"],
+      "additionalProperties": false
+    }
+  }
+}

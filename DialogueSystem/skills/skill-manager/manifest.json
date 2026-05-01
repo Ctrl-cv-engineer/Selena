@@ -1,0 +1,13 @@
+{
+  "name": "skill-manager",
+  "version": "2.0.0",
+  "enabled": true,
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "description": "List, create, update, delete, import, export, and browse DialogueSystem managed skills.",
+  "when_to_use": [
+    "Use this skill when the user asks to inspect installed skills.",
+    "Use this skill when the user wants to create, modify, enable, disable, or delete a managed skill.",
+    "Use this skill when the user wants to import, export, or browse skills from a marketplace or registry."
+  ]
+}

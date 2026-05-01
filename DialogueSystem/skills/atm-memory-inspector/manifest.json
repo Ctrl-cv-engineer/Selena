@@ -1,0 +1,22 @@
+{
+  "name": "atm-memory-inspector",
+  "version": "1.0.0",
+  "enabled": true,
+  "description": "Inspect Selena's ATM autonomous-task outputs, including completed poems, essays, notes, and other stored writing artifacts.",
+  "when_to_use": [
+    "Use this skill when the user asks what Selena recently did in ATM or what she wrote by herself today.",
+    "Use this skill when the user asks for 原文、全文、诗歌、随笔、笔记、念给我听、把你写的给我看, and the real stored ATM artifact should be read instead of improvised.",
+    "Use this skill when you need to search ATM task history first, then open the best matching stored artifact by task id."
+  ],
+  "intent_examples": [
+    "你今天做了些什么",
+    "你今天写了什么",
+    "你把之前写的给我看看",
+    "你念给我听听吧",
+    "把你写的那篇随笔原文给我",
+    "查一下 ATM 里最近完成的诗歌"
+  ],
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "source_format": "agent_skill"
+}

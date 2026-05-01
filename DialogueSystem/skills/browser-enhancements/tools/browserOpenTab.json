@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserOpenTab",
+    "description": "Open a URL in a brand-new visible Chrome tab and keep the previous tab available.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Url": {
+          "type": "string",
+          "description": "The http(s) URL or hostname to open."
+        }
+      },
+      "required": ["Url"],
+      "additionalProperties": false
+    }
+  }
+}

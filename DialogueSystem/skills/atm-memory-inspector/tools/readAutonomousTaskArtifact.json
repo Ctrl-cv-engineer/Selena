@@ -1,0 +1,33 @@
+{
+  "type": "function",
+  "function": {
+    "name": "readAutonomousTaskArtifact",
+    "description": "Read the full original text artifact stored in a completed ATM autonomous task, such as a poem, essay, note, or long-form writing. Use after searchAutonomousTaskArtifacts for 原文、全文、诗歌、随笔、笔记、念给我听这类请求 when the user wants the actual text.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskId": {
+          "type": "integer",
+          "description": "The task_id returned by searchAutonomousTaskArtifacts."
+        },
+        "MaxChars": {
+          "type": "integer",
+          "description": "Optional maximum number of characters to return from the artifact text (200-20000). Default 6000."
+        }
+      },
+      "required": [
+        "TaskId"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "memory",
+    "risk_level": "safe",
+    "admin_only": false,
+    "requires_approval": false,
+    "backend": "direct",
+    "supports_checkpoint": false,
+    "supports_redaction": true
+  }
+}

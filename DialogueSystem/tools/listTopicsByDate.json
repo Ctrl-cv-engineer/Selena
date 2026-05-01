@@ -1,0 +1,26 @@
+{
+  "type": "function",
+  "function": {
+    "name": "listTopicsByDate",
+    "description": "List archived conversation topics within a date range, bypassing semantic search. Use this for queries like 'what did we discuss yesterday' or 'show me topics from last week'. For relative dates, first call getTime to get the current date, then pass absolute ISO dates. When both SinceDate and UntilDate are empty, the most recent topics are returned.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "SinceDate": {
+          "type": "string",
+          "description": "Optional lower bound (inclusive) for archived_at. Accepts 'YYYY-MM-DD' or ISO datetime. Leave empty for no lower bound."
+        },
+        "UntilDate": {
+          "type": "string",
+          "description": "Optional upper bound (exclusive) for archived_at. Accepts 'YYYY-MM-DD' (interpreted as end-of-day, i.e. next day 00:00) or ISO datetime. Leave empty for no upper bound."
+        },
+        "Limit": {
+          "type": "integer",
+          "description": "Maximum results to return (1-50). Default 20."
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    }
+  }
+}

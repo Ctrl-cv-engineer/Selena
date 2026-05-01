@@ -1,0 +1,31 @@
+{
+  "type": "function",
+  "function": {
+    "name": "writeLocalFile",
+    "description": "Write text content into a local file under an allowed workspace path.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Path": {
+          "type": "string",
+          "description": "Absolute or workspace-relative path to a text file."
+        },
+        "Content": {
+          "type": "string",
+          "description": "Replacement file content."
+        }
+      },
+      "required": ["Path", "Content"],
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "file_write",
+    "risk_level": "privileged",
+    "admin_only": true,
+    "requires_approval": true,
+    "backend": "direct",
+    "supports_checkpoint": true,
+    "supports_redaction": true
+  }
+}

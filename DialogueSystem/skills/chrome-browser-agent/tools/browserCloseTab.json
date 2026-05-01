@@ -1,0 +1,17 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserCloseTab",
+    "description": "Close a visible Chrome tab by tab id. If TabId is omitted, close the currently selected automation tab.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TabId": {
+          "type": "string",
+          "description": "Optional tab id returned from browserListTabs."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

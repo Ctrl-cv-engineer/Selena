@@ -1,0 +1,27 @@
+{
+  "type": "function",
+  "function": {
+    "name": "activateSkill",
+    "description": "Load detailed instructions for an installed skill, including SKILL.md content and resource file lists. Use this before applying a complex or instruction-only skill from the skill map.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "SkillName": {
+          "type": "string",
+          "description": "The skill name or folder name to activate."
+        }
+      },
+      "required": ["SkillName"],
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "core",
+    "risk_level": "safe",
+    "admin_only": false,
+    "requires_approval": false,
+    "backend": "direct",
+    "supports_checkpoint": false,
+    "supports_redaction": false
+  }
+}

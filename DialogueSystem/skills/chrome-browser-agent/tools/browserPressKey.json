@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserPressKey",
+    "description": "Send a keyboard key or shortcut to the current visible Chrome page, for example Enter, Escape, Ctrl+L, or ArrowDown.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Key": {
+          "type": "string",
+          "description": "The key or shortcut to press."
+        }
+      },
+      "required": ["Key"],
+      "additionalProperties": false
+    }
+  }
+}

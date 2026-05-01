@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserClick",
+    "description": "Click an interactive element in the visible Google Chrome page by using a Ref returned from browserSnapshot.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Ref": {
+          "type": "string",
+          "description": "The ref id of the element to click, for example e3."
+        }
+      },
+      "required": ["Ref"],
+      "additionalProperties": false
+    }
+  }
+}

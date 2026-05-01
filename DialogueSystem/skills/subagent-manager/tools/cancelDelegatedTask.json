@@ -1,0 +1,22 @@
+{
+  "type": "function",
+  "function": {
+    "name": "cancelDelegatedTask",
+    "description": "Cancel a delegated sub-agent task. Running tasks will stop at the next safe checkpoint; waiting tasks are cancelled immediately.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskId": {
+          "type": "string",
+          "description": "The delegated task id to cancel."
+        },
+        "Reason": {
+          "type": "string",
+          "description": "Optional human-readable reason for the cancellation."
+        }
+      },
+      "required": ["TaskId"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,14 @@
+# ===== 核心依赖（必需）=====
+requests>=2.31.0
+qdrant-client>=1.7.0
+numpy>=1.24.0
+tiktoken>=0.5.0
+pyyaml>=6.0
+
+# ===== 可选依赖（按功能启用）=====
+# 本地 Embedding（如不使用云端 Embedding 服务）
+# sentence-transformers>=2.2.0
+
+# 文档生成 skill（document-generation）
+# python-docx>=1.0.0
+# python-pptx>=0.6.21

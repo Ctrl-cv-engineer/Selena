@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "listSkills",
+    "description": "List installed DialogueSystem skills and their registered tool names.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "schedule-manager",
+  "version": "1.0.0",
+  "enabled": true,
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "description": "Create, query, update, and delete user schedule tasks stored in the local SQLite reminder system.",
+  "when_to_use": [
+    "Use this skill when the user asks to create a reminder, schedule, calendar item, todo with a reminder time, or a dated task.",
+    "Use this skill when the user wants to view, modify, postpone, complete, cancel, or delete an existing schedule task.",
+    "Use these tools instead of pretending to remember schedules from prior turns."
+  ]
+}

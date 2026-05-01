@@ -1,0 +1,19 @@
+{
+  "name": "system-diagnostics",
+  "version": "1.0.0",
+  "enabled": true,
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "description": "Read runtime logs and system diagnostics for troubleshooting.",
+  "when_to_use": [
+    "Use this skill when the user asks to check logs or troubleshoot issues.",
+    "Use this skill when the user wants to inspect the runtime state of the dialogue system."
+  ],
+  "intent_examples": [
+    "查看日志",
+    "最近有什么错误",
+    "系统出了什么问题",
+    "check the logs",
+    "show me recent errors"
+  ]
+}

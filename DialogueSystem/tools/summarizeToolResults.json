@@ -1,0 +1,30 @@
+{
+  "type": "function",
+  "function": {
+    "name": "summarizeToolResults",
+    "description": "Summarize the previous tool or skill outputs and end the current Agent planning phase.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "SummaryTools": {
+          "type": "string",
+          "description": "A concise natural-language summary of the important tool or skill outputs that should be reflected in the final reply."
+        },
+        "ReachedMaxToolCalls": {
+          "type": "boolean",
+          "description": "Whether the Agent is ending because the maximum tool-call limit was reached."
+        },
+        "ProcedureSummary": {
+          "type": "string",
+          "description": "Optional. A concise shortcut summary of the operation performed, optimized for reuse next time. Distill multi-step paths into the minimal steps needed. Preserve concrete URLs and key parameters. Example: '播放网易云我喜欢的音乐 → browserNavigate(url=\"https://music.163.com/#/my/m/music/playlist?id=465711932\") → 点击播放'. Leave empty for simple tasks that don't need to be remembered (e.g. weather queries)."
+        },
+        "PreviousProcedureId": {
+          "type": "string",
+          "description": "Optional. The id of a previously learned procedure that was used in this task (returned by searchLearnedProcedures). When provided, the system will update that procedure with the new ProcedureSummary instead of creating a duplicate."
+        }
+      },
+      "required": ["SummaryTools"],
+      "additionalProperties": false
+    }
+  }
+}

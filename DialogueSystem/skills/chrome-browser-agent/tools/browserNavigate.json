@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserNavigate",
+    "description": "Open a URL in the visible Google Chrome automation window and wait for the page to finish loading.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Url": {
+          "type": "string",
+          "description": "The http(s) URL or hostname to open."
+        }
+      },
+      "required": ["Url"],
+      "additionalProperties": false
+    }
+  }
+}

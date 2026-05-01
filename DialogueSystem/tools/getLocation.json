@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "getLocation",
+    "description": "Get the current user location when it is available.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

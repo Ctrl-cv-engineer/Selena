@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "webSearch",
+    "description": "使用互联网进行搜索，获取实时信息。适用于查询新闻、价格、天气、知识等需要联网获取的内容。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Query": {
+          "type": "string",
+          "description": "搜索关键词或问题"
+        }
+      },
+      "required": ["Query"],
+      "additionalProperties": false
+    }
+  }
+}

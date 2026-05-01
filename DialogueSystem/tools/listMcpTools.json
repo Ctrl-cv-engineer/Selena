@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "listMcpTools",
+    "description": "List MCP-backed tools currently discovered from enabled servers.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

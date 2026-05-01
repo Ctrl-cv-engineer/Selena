@@ -1,0 +1,42 @@
+{
+  "type": "function",
+  "function": {
+    "name": "promoteLearnedProcedureToSkill",
+    "description": "Promote a previously learned operation shortcut into an Agent Skills style SKILL.md package. Use only when the user asks to turn a learned procedure into a reusable skill.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "ProcedureId": {
+          "type": "string",
+          "description": "The id returned by searchLearnedProcedures."
+        },
+        "ProcedureText": {
+          "type": "string",
+          "description": "The exact learned procedure text, used when ProcedureId is unavailable."
+        },
+        "SkillName": {
+          "type": "string",
+          "description": "Optional skill name. If omitted, a safe name is derived from the procedure."
+        },
+        "Description": {
+          "type": "string",
+          "description": "Optional skill description. If omitted, one is derived from the procedure trigger."
+        },
+        "Enabled": {
+          "type": "boolean",
+          "description": "Whether the created skill should be enabled. Defaults to true."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "skill_admin",
+    "risk_level": "privileged",
+    "admin_only": true,
+    "requires_approval": true,
+    "backend": "direct",
+    "supports_checkpoint": false,
+    "supports_redaction": true
+  }
+}

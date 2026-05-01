@@ -1,0 +1,19 @@
+{
+  "type": "function",
+  "function": {
+    "name": "controlSelf",
+    "description": "Control the dialogue system lifecycle.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Result": {
+          "type": "string",
+          "enum": ["Shutdown", "Restart"],
+          "description": "The lifecycle action to perform."
+        }
+      },
+      "required": ["Result"],
+      "additionalProperties": false
+    }
+  }
+}

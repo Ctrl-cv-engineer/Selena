@@ -1,0 +1,31 @@
+{
+  "type": "function",
+  "function": {
+    "name": "runTerminalCommand",
+    "description": "Run a terminal command using the configured terminal backend.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Command": {
+          "type": "string",
+          "description": "The terminal command to execute."
+        },
+        "TimeoutSeconds": {
+          "type": "number",
+          "description": "Optional timeout budget in seconds."
+        }
+      },
+      "required": ["Command"],
+      "additionalProperties": false
+    }
+  },
+  "x-dialogue-metadata": {
+    "toolset": "terminal",
+    "risk_level": "privileged",
+    "admin_only": true,
+    "requires_approval": true,
+    "backend": "isolated",
+    "supports_checkpoint": false,
+    "supports_redaction": true
+  }
+}

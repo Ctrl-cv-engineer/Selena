@@ -1,0 +1,95 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+*.egg
+.numba_cache/
+
+# ===== Node =====
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# ===== Logs =====
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ===== 配置与凭据（真实配置不上传，只保留 example） =====
+config.json
+*.env
+.env.*
+
+# ===== 运行时产物（保留 .gitkeep 以维持空目录结构） =====
+DialogueSystem/data/*
+!DialogueSystem/data/.gitkeep
+DialogueSystem/history/*
+!DialogueSystem/history/.gitkeep
+DialogueSystem/logs/*
+!DialogueSystem/logs/.gitkeep
+
+# ===== 内部文档（不公开） =====
+DialogueSystem/docs/
+
+# ===== 向量数据库 =====
+qdrant_data/
+qdrant_data_docker/
+qdrant_data_server/
+qdrant_all_data.json
+
+# ===== 音频文件 =====
+*.mp3
+*.wav
+
+# ===== 实验 / 非核心目录 =====
+/LLM/
+ASR_Analysis/
+Input_Analysis/
+RAG_Analysis/
+TTS_Test/
+AtmFile/
+Application/
+integration_test_artifacts/
+
+# ===== MemorySystem 测试/实验文件（核心 Qdrant.py 保留上传） =====
+MemorySystem/Embedding.py
+MemorySystem/EmbeddingTest.py
+MemorySystem/RerankTest.py
+MemorySystem/SummaryMemory.py
+MemorySystem/test.py
+MemorySystem/Topic.md
+MemorySystem/SummaryMermoyPrompt.md
+
+# ===== 测试目录（不上传） =====
+AgentTests/
+AutonomousTaskTests/
+
+# ===== 根目录实验脚本 =====
+/main.py
+/test.py
+
+# ===== Claude Code 本地配置 =====
+.claude/settings.local.json
+
+# ===== 构建与缓存 =====
+.vite/
+*.lock
+
+# ===== IDE =====
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ===== OS =====
+.DS_Store
+Thumbs.db

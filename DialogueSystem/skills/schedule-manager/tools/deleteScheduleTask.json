@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "deleteScheduleTask",
+    "description": "Delete an existing schedule task from the local SQLite reminder database.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskId": {
+          "type": "integer",
+          "description": "Existing task id to delete."
+        }
+      },
+      "required": ["TaskId"],
+      "additionalProperties": false
+    }
+  }
+}

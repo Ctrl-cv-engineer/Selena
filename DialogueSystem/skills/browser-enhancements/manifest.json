@@ -1,0 +1,13 @@
+{
+  "name": "browser-enhancements",
+  "version": "1.1.0",
+  "enabled": true,
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "description": "Richer browser helpers for opening background pages, extracting larger page text, and reading linked pages with safer candidate selection.",
+  "when_to_use": [
+    "Use this skill when you need richer page text extraction than the default browser snapshot tools.",
+    "Use this skill when you need to open a page in a new tab without replacing the current page.",
+    "Use this skill when you want one-hop reading from search results or visible page links, but still want the option to inspect candidate refs before opening one."
+  ]
+}

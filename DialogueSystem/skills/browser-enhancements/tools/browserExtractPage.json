@@ -1,0 +1,17 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserExtractPage",
+    "description": "Extract visible page text and interactive summary of the current browser page with a larger text budget than browserSnapshot.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "MaxTextLength": {
+          "type": "integer",
+          "description": "Optional maximum visible-text character count."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

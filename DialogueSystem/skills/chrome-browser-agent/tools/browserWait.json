@@ -1,0 +1,33 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserWait",
+    "description": "Wait for the current page to settle or for a visible ref, text snippet, URL fragment, or title fragment to appear before continuing.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Ref": {
+          "type": "string",
+          "description": "Optional ref that should become visible."
+        },
+        "TextContains": {
+          "type": "string",
+          "description": "Optional visible text fragment that should appear on the page."
+        },
+        "UrlContains": {
+          "type": "string",
+          "description": "Optional URL fragment that should appear in the current tab URL."
+        },
+        "TitleContains": {
+          "type": "string",
+          "description": "Optional title fragment that should appear in the current page title."
+        },
+        "TimeoutMs": {
+          "type": "integer",
+          "description": "Optional timeout in milliseconds. Defaults to 5000."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

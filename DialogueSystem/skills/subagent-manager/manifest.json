@@ -1,0 +1,15 @@
+{
+  "name": "subagent-manager",
+  "version": "4.0.0",
+  "enabled": true,
+  "runtime_mode": "trusted",
+  "trusted_runtime": true,
+  "description": "Delegate bounded subtasks to specialized background agents, including parallel fan-out and wait-all orchestration. Built-in types: explore, research, plan, review, test, general. Custom agent types can be defined in agents/*.md files.",
+  "when_to_use": [
+    "Use this skill when the task can be split into an isolated subtask that can run in parallel.",
+    "Use this skill when several independent subtasks should be fanned out together and then waited on as a batch.",
+    "Use specialized agent types: built-in (explore, research, plan, review, test, general) or custom types defined in agents/*.md.",
+    "Use this skill when you need to check the progress or result of an already delegated sub-agent task.",
+    "Provide rich context (background, constraints, relevant files) to help the sub-agent understand the task better."
+  ]
+}

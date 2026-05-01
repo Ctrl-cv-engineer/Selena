@@ -1,0 +1,33 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserReadLinkedPage",
+    "description": "Search in the browser or inspect the current page, then either return visible link candidates or open a chosen ref and extract the linked page text.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Query": {
+          "type": "string",
+          "description": "Optional search query. If omitted, the current page is inspected instead."
+        },
+        "Ref": {
+          "type": "string",
+          "description": "Optional explicit link ref to open, for example e4 from browserSnapshot."
+        },
+        "AutoOpenFirst": {
+          "type": "boolean",
+          "description": "Whether to automatically open the first visible candidate link when Ref is not provided. Defaults to false."
+        },
+        "MaxCandidates": {
+          "type": "integer",
+          "description": "Optional maximum number of visible link candidates to return when previewing choices. Defaults to 5."
+        },
+        "MaxTextLength": {
+          "type": "integer",
+          "description": "Optional maximum visible-text character count."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

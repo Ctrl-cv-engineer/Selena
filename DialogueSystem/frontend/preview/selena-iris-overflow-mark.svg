@@ -1,0 +1,51 @@
+<svg width="160" height="160" viewBox="-8 -10 48 52" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Overflow iris mark preview">
+  <defs>
+    <linearGradient id="tileFill" x1="3" y1="2" x2="29" y2="31" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8F5FF"/>
+      <stop offset="0.55" stop-color="#F1F4FF"/>
+      <stop offset="1" stop-color="#ECFAF3"/>
+    </linearGradient>
+    <linearGradient id="upperPetal" x1="16" y1="-7" x2="16" y2="14" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A69BFF"/>
+      <stop offset="0.52" stop-color="#6E5CE8"/>
+      <stop offset="1" stop-color="#4638B7"/>
+    </linearGradient>
+    <linearGradient id="leftPetal" x1="-3.5" y1="3" x2="17" y2="17" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4936C2"/>
+      <stop offset="1" stop-color="#8E83FF"/>
+    </linearGradient>
+    <linearGradient id="rightPetal" x1="35.5" y1="3" x2="15" y2="17" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7E70FF"/>
+      <stop offset="1" stop-color="#4E3ED2"/>
+    </linearGradient>
+    <linearGradient id="fallPetal" x1="16" y1="10" x2="16" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B6AFFF"/>
+      <stop offset="1" stop-color="#6657E6"/>
+    </linearGradient>
+    <linearGradient id="greenStem" x1="13" y1="17" x2="19" y2="39" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#48C998"/>
+      <stop offset="1" stop-color="#147D63"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10" y="-12" width="52" height="56" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" flood-color="#2A245A" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect x="1" y="1" width="30" height="30" rx="8" fill="url(#tileFill)"/>
+  <rect x="1" y="1" width="30" height="30" rx="8" stroke="#D2D6FF" stroke-width="1.35"/>
+
+  <g filter="url(#softShadow)" stroke-linejoin="round">
+    <path d="M16 -7.1C11.6 -4.1 9.8 3 15.6 11.5C21.9 3.2 20.5 -4.1 16 -7.1Z" fill="url(#upperPetal)" stroke="#5746D3" stroke-width="0.65"/>
+    <path d="M-3.4 7.7C2.1 1.5 9.5 2.2 14.9 11.3C5.3 16.2 -1.2 14.5 -3.4 7.7Z" fill="url(#leftPetal)" stroke="#4F3CCC" stroke-width="0.65"/>
+    <path d="M35.4 7.7C29.9 1.5 22.5 2.2 17.1 11.3C26.7 16.2 33.2 14.5 35.4 7.7Z" fill="url(#rightPetal)" stroke="#5E50DD" stroke-width="0.65"/>
+    <path d="M8.5 9.5C5.8 15.3 7.4 21.2 14.8 23.9C16.2 16.4 13.5 11.3 8.5 9.5Z" fill="#958AFF" stroke="#6759DC" stroke-width="0.55"/>
+    <path d="M23.5 9.5C26.2 15.3 24.6 21.2 17.2 23.9C15.8 16.4 18.5 11.3 23.5 9.5Z" fill="#A69DFF" stroke="#776AE9" stroke-width="0.55"/>
+    <path d="M16 10.4C12.9 14.2 12.6 20.5 16 26.1C19.4 20.5 19.1 14.2 16 10.4Z" fill="url(#fallPetal)" stroke="#5746D3" stroke-width="0.6"/>
+    <path d="M13.6 12.5C14.4 13.4 15.2 13.9 16 13.9C16.8 13.9 17.6 13.4 18.4 12.5" stroke="#FFF5AE" stroke-width="1.15" stroke-linecap="round"/>
+    <path d="M16 15.2C17.1 19.9 16.8 26 14.9 37.4" stroke="url(#greenStem)" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M16.8 21.8C20.6 18.6 24.3 18.2 28.4 21.4" stroke="#55C895" stroke-width="1.75" stroke-linecap="round"/>
+    <path d="M15.5 24.1C11.1 21.2 7.5 21.6 4.4 25.6" stroke="#4FBF8C" stroke-width="1.75" stroke-linecap="round"/>
+  </g>
+
+  <circle cx="16" cy="12.4" r="1.75" fill="#FFD56A" stroke="#F2AA3C" stroke-width="0.45"/>
+</svg>

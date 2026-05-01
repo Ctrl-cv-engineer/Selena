@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "getSelfLog",
+    "description": "Read the recent runtime log for troubleshooting.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

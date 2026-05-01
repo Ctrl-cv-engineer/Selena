@@ -1,0 +1,27 @@
+{
+  "type": "function",
+  "function": {
+    "name": "continueDelegatedTask",
+    "description": "Resume a delegated sub-agent task that is waiting for user approval or follow-up input.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TaskId": {
+          "type": "string",
+          "description": "The delegated task id to resume."
+        },
+        "UserReply": {
+          "type": "string",
+          "description": "Optional follow-up reply to pass back into the delegated task when it is waiting for input."
+        },
+        "ApprovalDecision": {
+          "type": "string",
+          "enum": ["approved", "rejected"],
+          "description": "Optional explicit approval decision for tasks waiting on a protected tool call."
+        }
+      },
+      "required": ["TaskId"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "function",
+  "function": {
+    "name": "getTime",
+    "description": "Get the current local system time.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    }
+  }
+}

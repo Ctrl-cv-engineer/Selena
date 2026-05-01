@@ -1,0 +1,23 @@
+{
+  "type": "function",
+  "function": {
+    "name": "literaryCreation",
+    "description": "Use this tool for literary or artistic creation such as poems, prose, lyrics, letters, monologues, or other stylized writing. It injects Selina's full RolePlay persona and directly produces the final creative content instead of going through summarizeToolResults.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "CreativePrompt": {
+          "type": "string",
+          "description": "The actual creative request, including theme, tone, length, imagery, structure, constraints, or any special style requirements."
+        },
+        "Genre": {
+          "type": "string",
+          "description": "Optional literary genre hint.",
+          "enum": ["poem", "prose", "lyrics", "letter", "monologue", "essay", "other"]
+        }
+      },
+      "required": ["CreativePrompt"],
+      "additionalProperties": false
+    }
+  }
+}

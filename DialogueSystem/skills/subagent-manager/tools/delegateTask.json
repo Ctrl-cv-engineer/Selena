@@ -1,0 +1,69 @@
+{
+  "type": "function",
+  "function": {
+    "name": "delegateTask",
+    "description": "Delegate a bounded subtask to a specialized background agent. Use when: (1) the subtask is independent and can run in parallel, (2) you need specialized capabilities (code exploration, planning, review), (3) you want to protect main context from large results.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Task": {
+          "type": "string",
+          "description": "Clear, self-contained task description. Include: what to do, why it matters, what you've already learned, expected output format."
+        },
+        "AgentType": {
+          "type": "string",
+          "description": "Agent specialization name. Built-in types: 'explore' (fast code search), 'research' (deep analysis), 'plan' (architecture design), 'review' (code quality/security), 'test' (running tests), 'general' (default). Custom agent types defined in agents/*.md are also supported."
+        },
+        "Context": {
+          "type": "object",
+          "description": "Additional context for the agent to understand the task better.",
+          "properties": {
+            "background": {
+              "type": "string",
+              "description": "Background information about why this task is needed."
+            },
+            "constraints": {
+              "type": "string",
+              "description": "Constraints or requirements the agent should follow."
+            },
+            "relevant_files": {
+              "type": "array",
+              "items": {"type": "string"},
+              "description": "List of file paths that are relevant to this task."
+            },
+            "expected_output": {
+              "type": "string",
+              "description": "Description of the expected output format or structure."
+            }
+          }
+        },
+        "Model": {
+          "type": "string",
+          "description": "Optional model override for the child agent."
+        },
+        "MaxToolCalls": {
+          "type": "integer",
+          "description": "Optional upper bound for child-agent tool calls. Defaults vary by agent type (explore: 8, research: 20, plan: 10, review: 15, test: 12, general: 6)."
+        },
+        "TimeoutSeconds": {
+          "type": "number",
+          "description": "Optional soft timeout budget in seconds."
+        },
+        "Priority": {
+          "type": "integer",
+          "description": "Optional task priority. Higher numbers are scheduled first when the delegated-task queue is busy. Defaults to the runtime's configured default priority."
+        },
+        "UseCache": {
+          "type": "boolean",
+          "description": "If true (default), allow completed delegated-task results with the same task fingerprint to be served from cache. Set false for freshness-critical work."
+        },
+        "RunInBackground": {
+          "type": "boolean",
+          "description": "If true (default), return immediately and check status later. If false, wait for completion before returning."
+        }
+      },
+      "required": ["Task"],
+      "additionalProperties": false
+    }
+  }
+}

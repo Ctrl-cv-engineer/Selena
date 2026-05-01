@@ -1,0 +1,21 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserSnapshot",
+    "description": "Read the current visible Google Chrome page and return a ref-based snapshot with visible text plus interactive elements that can be clicked or typed into.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "MaxElements": {
+          "type": "integer",
+          "description": "Optional maximum number of interactive elements to include. Defaults to 40."
+        },
+        "MaxTextLength": {
+          "type": "integer",
+          "description": "Optional maximum number of visible-text characters to include. Defaults to 2000."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

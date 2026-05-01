@@ -1,0 +1,471 @@
+{
+    "LLM_Setting": {
+        "default_model": "qwen",
+        "providers": {
+            "qwen": {
+                "api_key": "sk-YOUR_QWEN_API_KEY",
+                "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+                "models": {
+                    "qwen": "qwen3.5-flash",
+                    "qwen_flash": "qwen-flash",
+                    "qwen_chara": {
+                        "model": "qwen-plus-character",
+                        "url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+                    },
+                    "qwen_max": "qwen3-max",
+                    "qwen_plus": "qwen3.6-plus"
+                }
+            },
+            "kimi": {
+                "api_key": "sk-YOUR_KIMI_API_KEY",
+                "base_url": "https://api.moonshot.cn/v1/chat/completions",
+                "models": {
+                    "kimi": "kimi-k2.6",
+                    "kimi_2.0": "kimi-k2-turbo-preview",
+                    "kimi_thinking": "kimi-k2-thinking-turbo"
+                }
+            },
+            "minimax": {
+                "api_key": "sk-YOUR_MINIMAX_API_KEY",
+                "base_url": "https://api.minimaxi.com/v1/chat/completions",
+                "models": {
+                    "minimax": "MiniMax-M2.7-highspeed",
+                    "minimax_chara": "M2-her"
+                }
+            },
+            "deepseek": {
+                "api_key": "sk-YOUR_DEEPSEEK_API_KEY",
+                "base_url": "https://api.deepseek.com/v1/chat/completions",
+                "models": {
+                    "deepseek_flash": "deepseek-v4-flash",
+                    "deepseek_pro": "deepseek-v4-pro"
+                }
+            },
+            "mimo": {
+                "api_key": "sk-YOUR_MIMO_API_KEY",
+                "base_url": "https://api.xiaomimimo.com/v1/chat/completions",
+                "models": {
+                    "mimo": "mimo-v2-flash"
+                }
+            },
+            "openrouter": {
+                "api_key": "sk-or-YOUR_OPENROUTER_API_KEY",
+                "base_url": "https://openrouter.ai/api/v1/chat/completions",
+                "models": {
+                    "grok": "x-ai/grok-4",
+                    "openai": "openai/gpt-5.2",
+                    "gemini": "google/gemini-3.1-pro-preview"
+                }
+            }
+        }
+    },
+    "Embedding_Setting": {
+        "qwen_embedding_modelName": "text-embedding-v4",
+        "qwen_embedding_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/embeddings",
+        "qwen_key": "sk-YOUR_QWEN_API_KEY"
+    },
+    "Rerank_Setting": {
+        "qwen_rerank_modelName": "qwen3-rerank",
+        "qwen_rerank_url": "https://dashscope.aliyuncs.com/compatible-api/v1/reranks",
+        "qwen_rerank_key": "sk-YOUR_QWEN_API_KEY"
+    },
+    "ModelSelect": {
+        "Agent": {
+            "enabled": true,
+            "model": "deepseek_flash",
+            "thinking": true,
+            "json_mode": false,
+            "reasoning_effort": "max"
+        },
+        "Simple": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": false,
+            "json_mode": false,
+            "reasoning_effort": "high"
+        },
+        "RolePlay": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": false,
+            "json_mode": false,
+            "reasoning_effort": "high"
+        },
+        "LiteraryCreation": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": true,
+            "json_mode": false,
+            "reasoning_effort": "high"
+        },
+        "SummaryAndMermory": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": true,
+            "json_mode": true,
+            "reasoning_effort": "max"
+        },
+        "topic_same": {
+            "enabled": true,
+            "model": "deepseek_flash",
+            "thinking": true,
+            "json_mode": true,
+            "reasoning_effort": "high"
+        },
+        "topic_archive_summary": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": false,
+            "json_mode": false,
+            "reasoning_effort": "high"
+        },
+        "context_summary": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": true,
+            "json_mode": false,
+            "reasoning_effort": "high"
+        },
+        "SilenceFollowUpPrompt": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": true,
+            "json_mode": false,
+            "reasoning_effort": "high"
+        },
+        "core_memory_update": {
+            "enabled": true,
+            "model": "deepseek_pro",
+            "thinking": true,
+            "json_mode": true,
+            "reasoning_effort": "high"
+        },
+        "LLMIntentRouter": {
+            "enabled": true,
+            "model": "qwen_flash",
+            "thinking": false,
+            "json_mode": true,
+            "reasoning_effort": "high"
+        },
+        "SkillEvolutionEval": {
+            "enabled": true,
+            "model": "deepseek_flash",
+            "thinking": false,
+            "json_mode": true,
+            "reasoning_effort": "high"
+        },
+        "AgentTestJudge": {
+            "enabled": true,
+            "model": "deepseek_flash",
+            "thinking": true,
+            "json_mode": true,
+            "reasoning_effort": "max"
+        }
+    },
+    "SkillEvolution": {
+        "enabled": true,
+        "min_tool_calls": 3,
+        "similarity_threshold": 0.7
+    },
+    "AgentRuntime": {
+        "max_tool_calls": 50,
+        "max_consecutive_same_tool_calls": 20
+    },
+    "IntentRouter": {
+        "method": "llm",
+        "enabled": true,
+        "high_confidence_threshold": 0.78,
+        "low_confidence_threshold": 0.55,
+        "candidate_limit": 4,
+        "llm_fallback": {
+            "enabled": true,
+            "model": "qwen_flash",
+            "thinking": false,
+            "json_mode": true,
+            "reasoning_effort": "high"
+        }
+    },
+    "ContextMemory": {
+        "enabled": true,
+        "update_trigger": "topic_switch",
+        "update_min_new_messages": 6,
+        "update_on_empty": false,
+        "max_chars": 2200,
+        "max_items_total": 14,
+        "max_items_per_section": 4,
+        "max_item_chars": 80,
+        "recent_message_limit": 12
+    },
+    "AgentRetrievalCache": {
+        "enabled": true,
+        "match_model": "qwen_flash",
+        "match_thinking": false,
+        "match_json_mode": true,
+        "match_reasoning_effort": "low",
+        "max_cache_inject_chars": 8000,
+        "cacheable_tools": [
+            "webSearch",
+            "webFetch",
+            "browserExtractPage",
+            "readAutonomousTaskArtifact",
+            "searchAutonomousTaskArtifacts",
+            "searchLongTermMemory",
+            "searchFullText",
+            "readLocalFile"
+        ]
+    },
+    "Summary": {
+        "Max_context": 100,
+        "Summary_context": 70,
+        "Agent_Max": 6
+    },
+    "SilentTime": {
+        "First": 300,
+        "Last": 900
+    },
+    "Qdrant_Setting": {
+        "host": "127.0.0.1",
+        "port": 6333,
+        "grpc_port": 6334,
+        "prefer_grpc": false,
+        "local_data_path": "./qdrant_data",
+        "docker_data_path": "./qdrant_data_docker",
+        "collections": {
+            "intention": {
+                "name": "IntentionSelection_512",
+                "vector_size": 512
+            },
+            "rag": {
+                "name": "rag_memory_512",
+                "test": "rag_test_512",
+                "vector_size": 512
+            },
+            "memory": {
+                "name": "long_term_memory_512",
+                "vector_size": 512
+            },
+            "web_embedding": {
+                "name": "web_embedding_1024",
+                "vector_size": 1024
+            }
+        }
+    },
+    "Frontend": {
+        "enabled": true,
+        "auto_start": true,
+        "host": "127.0.0.1",
+        "port": 5173,
+        "api_port": 8000,
+        "package_manager": "pnpm"
+    },
+    "MCP": {
+        "enabled": false,
+        "servers": [
+            {
+                "name": "example",
+                "enabled": false,
+                "url": "http://127.0.0.1:9000/mcp",
+                "auth_token": ""
+            }
+        ]
+    },
+    "Security": {
+        "is_admin": false,
+        "approval_mode": "manual",
+        "allow_local_terminal": false,
+        "enabled_toolsets": [
+            "core",
+            "memory",
+            "schedule",
+            "browser",
+            "file_read",
+            "file_write",
+            "terminal",
+            "subagent",
+            "mcp",
+            "skill_admin"
+        ],
+        "approved_tools": [],
+        "file_roots": [
+            "."
+        ]
+    },
+    "ExecutionBackends": {
+        "terminal": {
+            "default_backend": "isolated"
+        }
+    },
+    "SubAgentPolicy": {
+        "max_depth": 1,
+        "allow_admin_tools": false,
+        "max_concurrent_tasks": 2,
+        "max_queue_size": 16,
+        "default_priority": 0,
+        "result_cache_enabled": true,
+        "result_cache_ttl_seconds": 600,
+        "result_cache_max_entries": 64,
+        "toolsets": null,
+        "agent_type_configs": {
+            "general": {
+                "toolsets": [
+                    "core",
+                    "memory",
+                    "browser",
+                    "schedule",
+                    "file_read"
+                ],
+                "max_tool_calls": 6,
+                "resource_limits": {
+                    "max_file_reads": 50,
+                    "max_file_writes": 0,
+                    "max_network_calls": 10
+                }
+            },
+            "explore": {
+                "toolsets": [
+                    "core",
+                    "file_read"
+                ],
+                "max_tool_calls": 8,
+                "resource_limits": {
+                    "max_file_reads": 100,
+                    "max_file_writes": 0,
+                    "max_network_calls": 0
+                }
+            },
+            "research": {
+                "toolsets": [
+                    "core",
+                    "memory",
+                    "browser",
+                    "file_read"
+                ],
+                "max_tool_calls": 20,
+                "resource_limits": {
+                    "max_file_reads": 200,
+                    "max_file_writes": 0,
+                    "max_network_calls": 20
+                }
+            },
+            "plan": {
+                "toolsets": [
+                    "core",
+                    "memory",
+                    "file_read"
+                ],
+                "max_tool_calls": 10,
+                "resource_limits": {
+                    "max_file_reads": 50,
+                    "max_file_writes": 0,
+                    "max_network_calls": 5
+                }
+            },
+            "review": {
+                "toolsets": [
+                    "core",
+                    "file_read"
+                ],
+                "max_tool_calls": 15,
+                "resource_limits": {
+                    "max_file_reads": 150,
+                    "max_file_writes": 0,
+                    "max_network_calls": 0
+                }
+            },
+            "test": {
+                "toolsets": [
+                    "core",
+                    "file_read",
+                    "terminal"
+                ],
+                "max_tool_calls": 12,
+                "resource_limits": {
+                    "max_file_reads": 80,
+                    "max_file_writes": 5,
+                    "max_network_calls": 0
+                }
+            }
+        }
+    },
+    "AutonomousTaskMode": {
+        "enabled": true,
+        "idle_threshold_seconds": 2000,
+        "max_daily_tasks": 3,
+        "max_task_attempts": 3,
+        "max_daily_interrupts": 10,
+        "cancel_wait_seconds": 15,
+        "stale_attempt_timeout_seconds": 600,
+        "token_limits": {
+            "max_input_tokens_per_session": 2000000,
+            "max_output_tokens_per_session": 1000000,
+            "max_input_tokens_per_task": 2000000,
+            "max_output_tokens_per_task": 1000000
+        },
+        "task_planning": {
+            "enabled": true,
+            "model": "deepseek_flash",
+            "thinking": true,
+            "json_mode": true,
+            "reasoning_effort": "high"
+        },
+        "task_execution": {
+            "enabled": true,
+            "agent_type": "autonomous",
+            "model": "deepseek_flash",
+            "thinking": true,
+            "json_mode": false,
+            "reasoning_effort": "max",
+            "max_tool_calls": 1000,
+            "timeout_seconds": 3000
+        },
+        "sharing_score": {
+            "enabled": true,
+            "model": "deepseek_flash",
+            "thinking": false,
+            "json_mode": false,
+            "reasoning_effort": "high"
+        },
+        "summary_on_complete": true,
+        "sharing": {
+            "min_score": 8,
+            "cooldown_days": 3,
+            "max_inject_count": 5,
+            "mention_detection": {
+                "embedding_threshold": 0.72,
+                "keyword_min_hits": 2
+            }
+        }
+    },
+    "VectorSetting": {
+        "Top_k": 10,
+        "Importance_Threshold": 0.8,
+        "Max_SearchScore": 3.0,
+        "Temperature_Weight": {
+            "hot": 1.15,
+            "warm": 1.1,
+            "cold": 1.0
+        },
+        "Rerank_Scale": 0.75,
+        "Cold_SearchScore_Multiplier": 0.3,
+        "Other_SearchScore_Multiplier": 0.7,
+        "Duplicate_Vector_Threshold": 0.999999,
+        "Upgrade_Score_Threshold": 1.5,
+        "Downgrade_Score_Threshold": 0.2,
+        "Upgrade_TTL_Multiplier": 3,
+        "Downgrade_TTL_Multiplier": 1,
+        "Default_TTL_Days": 30,
+        "Rank_Score": 0.65,
+        "Rerank_Top_k": 4
+    },
+    "MemoryRecall": {
+        "rerank_min_score": 0.65
+    },
+    "Character": {
+        "char_name": "Assistant",
+        "user_title": "User",
+        "char_role": "A helpful AI assistant created to serve as your companion. You can customize this section to define your character's personality, background, and relationship with the user.",
+        "char_style": "Friendly, thoughtful, and expressive.",
+        "dialogue_examples": "",
+        "response_notes": ""
+    }
+}

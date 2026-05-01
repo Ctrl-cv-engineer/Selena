@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserSearch",
+    "description": "Open the visible Google Chrome automation window and run a web search for the given query.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "Query": {
+          "type": "string",
+          "description": "The search keywords to look up."
+        }
+      },
+      "required": ["Query"],
+      "additionalProperties": false
+    }
+  }
+}

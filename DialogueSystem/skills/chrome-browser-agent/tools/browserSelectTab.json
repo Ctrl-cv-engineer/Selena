@@ -1,0 +1,18 @@
+{
+  "type": "function",
+  "function": {
+    "name": "browserSelectTab",
+    "description": "Switch browser automation focus to a visible Chrome tab by tab id and bring that tab to the front.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "TabId": {
+          "type": "string",
+          "description": "The tab id returned from browserListTabs."
+        }
+      },
+      "required": ["TabId"],
+      "additionalProperties": false
+    }
+  }
+}
