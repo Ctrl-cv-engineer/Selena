@@ -46,7 +46,7 @@ Selena 不是“换个皮的聊天框”。
 > 前置要求：Python 3.9+、Docker 20.10+。如果你想手动跑前端，再准备一个 Node.js 18+。
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Ctrl-cv-engineer/Selena.git
 cd Selena
 
 cp config.example.json config.json
