@@ -8559,12 +8559,17 @@ class Selena:
             self.appendUserMessageSync(result, "assistant")
         return True
 
-    def start(self):
+    def start(self, frontend_runtime=None):
         """启动 Selena 的交互主循环。"""
         self.initialize_runtime()
         try:
             while self.chat_cycle:
-                user_input = input("请输入: ")
+                if frontend_runtime is not None:
+                    print("请输入: ", end="", flush=True)
+                    frontend_runtime.announce_ready()
+                    user_input = input()
+                else:
+                    user_input = input("请输入: ")
                 logger.info("用户输入: %s", user_input)
                 if not str(user_input or "").strip():
                     continue
@@ -8584,7 +8589,7 @@ if __name__ == "__main__":
             from DialogueSystem.runtime.frontend_runtime import DialogueFrontendRuntime
         frontend_runtime = DialogueFrontendRuntime(selena)
         frontend_runtime.start()
-        selena.start()
+        selena.start(frontend_runtime=frontend_runtime)
     finally:
         if frontend_runtime is not None:
             frontend_runtime.stop()

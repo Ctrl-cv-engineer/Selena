@@ -110,6 +110,7 @@ class DialogueFrontendRuntime:
         self.http_server = None
         self.http_thread = None
         self.config = get_frontend_config()
+        self._ready_announced = False
 
     @property
     def frontend_root(self):
@@ -131,17 +132,25 @@ class DialogueFrontendRuntime:
 
     def start(self):
         self.config = get_frontend_config()
+        self._ready_announced = False
         if not self.config.get("enabled", True):
             logger.info("Frontend runtime disabled by config")
             return
         self._start_api_server()
         if self.config.get("auto_start", True):
             self._start_frontend_process()
+
+    def announce_ready(self):
+        if self._ready_announced:
+            return
+        if not self.config.get("enabled", True):
+            return
         logger.info(
             "Frontend runtime ready | frontend_url=%s | api_url=%s",
             self.frontend_url,
             self.api_url,
         )
+        self._ready_announced = True
 
     def stop(self):
         if self.http_server is not None:
