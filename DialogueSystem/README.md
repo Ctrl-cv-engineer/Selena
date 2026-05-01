@@ -57,9 +57,3 @@ This directory contains Selena's main runtime, static prompt assets, and runtime
   - Runtime logs such as `dialogue_system.log*` and `history_summary_worker*.log`.
 - `__pycache__/`
   - Python cache files; not something you should maintain manually.
-
-## Maintenance suggestions
-
-- Prefer changing logic inside the appropriate subpackage before editing the top-level runtime assembly in `main.py`.
-- If you continue decomposing `main.py`, the cleanest boundaries are usually intent routing, retrieval/memory access, and tool approval/display flow.
-- Treat `history/` and `logs/` as runtime artifacts for debugging, not as source code that needs to be annotated or curated.
