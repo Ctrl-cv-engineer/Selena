@@ -57,7 +57,7 @@ Application/
 integration_test_artifacts/
 
 # ===== MemorySystem 测试/实验文件（核心 Qdrant.py 保留上传） =====
-DialogueSystem\Demo.py
+DialogueSystem/Demo.py
 MemorySystem/Embedding.py
 MemorySystem/EmbeddingTest.py
 MemorySystem/RerankTest.py
