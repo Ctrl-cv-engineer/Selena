@@ -1,18 +1,20 @@
+[简体中文](./CONTRIBUTING.zh-CN.md)
+
 # Contributing to Selena
 
-谢谢你愿意来折腾 Selena。
+Thanks for considering a contribution.
 
-这个项目还在持续演化，所以最有帮助的贡献不一定非得是“大功能”，把一个 bug 讲清楚、补一段文档、拆掉一处难懂逻辑，都是很实在的贡献。
+Selena is still evolving, so the most useful contribution is not always a big feature. A clear bug report, a missing example, a cleaner module boundary, or a sharper piece of documentation can all move the project forward.
 
-## 开始之前
+## Before you start
 
-- 先确认你改的是不是已经有人提过。
-- 如果是比较大的功能改动，建议先开个 issue 或 discussion，把方向对一下。
-- 如果你的改动会影响行为、配置项、提示词或者文档，请把相关说明一起更新。
+- Check whether the issue or idea already exists.
+- If the change is large, open an issue or discussion first so the direction is aligned.
+- If your change affects behavior, config, prompts, or docs, update the related documentation in the same PR.
 
-## 本地开发
+## Local development
 
-### 后端
+### Backend
 
 ```bash
 cp config.example.json config.json
@@ -23,7 +25,7 @@ docker compose up -d
 python -m DialogueSystem.main
 ```
 
-### 前端
+### Frontend
 
 ```bash
 cd DialogueSystem/frontend
@@ -31,41 +33,42 @@ pnpm install
 pnpm dev
 ```
 
-## 提 issue 时尽量带上这些信息
+## Good issue reports usually include
 
-- 你想做什么，或者你以为它本来应该怎么工作。
-- 实际发生了什么。
-- 能不能稳定复现，复现步骤是什么。
-- 相关日志、报错截图、配置片段。
-- 如果贴 `config.json` 片段，请先把 API Key、token、本地路径等敏感信息打码。
+- What you expected to happen
+- What actually happened
+- Whether the problem is reproducible
+- Minimal reproduction steps
+- Logs, screenshots, or config snippets when relevant
 
-## 提 PR 前的建议检查
+Please remove API keys, tokens, local paths, and other sensitive values before posting configuration fragments.
 
-目前仓库还没有完整 CI，所以提交前建议你至少自己过一遍：
+## Suggested checks before opening a PR
 
-- 后端能不能正常启动。
-- 如果改了前端，跑一下 `pnpm check` 和 `pnpm build`。
-- 如果改了提示词、技能、配置说明，相关文档有没有同步。
-- 如果改动影响用户可见行为，PR 描述里最好写明“改了什么、为什么改、怎么验证”。
+The repository does not have full CI coverage yet, so a quick manual pass helps a lot:
 
-## PR 风格
+- Make sure the backend still starts.
+- If you touched the frontend, run `pnpm check` and `pnpm build`.
+- If you changed prompts, skills, or configuration behavior, update the docs.
+- In the PR description, explain what changed, why it changed, and how you verified it.
 
-- 尽量一个 PR 只解决一件主要的事。
-- 小步提交比一口气堆很多不相关改动更容易 review。
-- 不要提交真实密钥、运行时日志、历史对话、数据库文件和本地产物。
-- 如果是实验性质改动，最好在 PR 里直说，不用装成已经完全稳定。
+## PR style
 
-## 比较受欢迎的贡献方向
+- Prefer one main concern per PR.
+- Small, reviewable changes are much easier to merge than huge mixed refactors.
+- Do not commit real keys, local databases, runtime logs, or private conversation history.
+- If something is still experimental, say so directly.
 
-- 文档补全和例子补全
-- 自动化测试 / smoke test / CI
-- `DialogueSystem/main.py` 继续拆模块
-- 前端可观测性和调试体验
-- 技能系统、MCP、浏览器代理相关能力扩展
+## Especially welcome contribution areas
 
-## 行为边界
+- Documentation polish and examples
+- Smoke tests, automated tests, and CI
+- Further decomposition of `DialogueSystem/main.py`
+- Frontend observability and debugging UX
+- Skill system, MCP, and browser-agent improvements
 
-参与协作默认遵守 [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)。
+## Collaboration norms
 
-如果你不确定某个改动适不适合直接做，开个 issue 先聊就行，不用憋着。
+By contributing, you agree to follow [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
 
+If you are unsure whether a change is worth doing, opening a discussion first is completely fine.

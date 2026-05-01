@@ -1,34 +1,35 @@
+[简体中文](./SECURITY.zh-CN.md)
+
 # Security Policy
 
-## 支持范围
+## Supported scope
 
-当前仓库以 `main` 分支的最新状态为主要维护对象。
+For now, the project primarily supports the current `main` branch state.
 
-如果将来有稳定 release，建议再把“受支持版本范围”补得更明确；现在先按“最新代码优先修复”理解就行。
+If the repository later adopts stable releases, this file should be updated with a more explicit support matrix. Until then, assume that fixes target the latest code first.
 
-## 报告安全问题
+## Reporting a security issue
 
-如果你发现的是安全漏洞，而不是普通 bug，请先不要公开发 issue。
+If you discover a security problem rather than a normal bug, please do not open a public issue first.
 
-建议按这个顺序处理：
+Recommended flow:
 
-1. 先整理影响范围、复现步骤、触发条件。
-2. 确认你的描述里没有带出 API Key、token、用户对话、数据库内容或其他敏感信息。
-3. 通过仓库维护者公开的私下联系方式进行披露。
+1. Prepare a clear description of the impact, trigger conditions, and reproduction steps.
+2. Remove secrets, conversation data, tokens, database content, and any other sensitive information from the report.
+3. Contact the maintainer privately through the available project contact channel.
 
-如果当前仓库页面还没写明安全联系方式，建议先联系维护者本人，再决定公开披露节奏。
+If the repository does not yet publish a dedicated security contact, reach out to the maintainer directly before disclosing details publicly.
 
-## 希望报告里包含的信息
+## Helpful details to include
 
-- 漏洞类型
-- 影响范围
-- 复现步骤
-- 可能的利用条件
-- 你建议的修复方向（如果有）
+- Vulnerability type
+- Affected scope
+- Reproduction steps
+- Required conditions for exploitation
+- Suggested mitigation or fix direction, if you have one
 
-## 披露原则
+## Disclosure expectations
 
-- 在维护者确认并开始处理之前，尽量不要公开细节。
-- 如果问题已经被修复，再公开复盘会更安全，也更方便其他使用者补丁升级。
-- 如果你拿不准某个问题算不算安全问题，也可以先按安全问题处理。
-
+- Avoid public disclosure before the maintainer has had a fair chance to investigate and patch the issue.
+- Public postmortems are much safer after a fix is available.
+- If you are unsure whether something counts as a security issue, it is fine to report it privately first.

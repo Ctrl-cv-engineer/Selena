@@ -1,60 +1,55 @@
+[简体中文](./zh-CN/README.md)
+
 <div align="center">
 
-# 📚 Selena 文档中心
+# Selena Documentation Hub
 
-> 完整的项目文档与技术细节。如果你刚到这里，先看根目录的 [**README**](../README.md)。
+> This is the public project documentation set. If you are new here, start with the root [README](../README.md).
 
 </div>
 
 ---
 
-## 🎓 上手指南
+## Getting started
 
-| 文档 | 说明 |
-|------|------|
-| [**60 秒快速启动**](../README.md#-60-秒快速启动) | 最短启动路径 |
-| [**完整部署指南**](../DEPLOYMENT.md) | 含环境隔离、Docker、生产建议 |
-| [**配置项参考**](../CONFIG_REFERENCE.md) | `config.json` 每个字段的含义 |
-| [**LLM 供应商接入**](./llm-providers.md) | 接入哪一家、模型怎么挑 |
+| Document | What it covers |
+| --- | --- |
+| [Quick start in the root README](../README.md#quick-start) | The shortest path to a working local setup |
+| [Deployment guide](../DEPLOYMENT.md) | Environment isolation, Qdrant, runtime startup, production notes |
+| [Config reference](../CONFIG_REFERENCE.md) | What the main `config.json` fields control |
+| [LLM providers](./llm-providers.md) | Provider setup, alias mapping, reasoning mode, and rerank wiring |
 
----
+## Architecture and core behavior
 
-## 🏛️ 架构与核心机制
+| Document | What it covers |
+| --- | --- |
+| [Architecture](./architecture.md) | Module boundaries, data flow, persistence, extension points |
+| [Agent loop](./agent-loop.md) | Planning, budgets, policy checks, compression, subagents |
+| [Intent routing](./intent-routing.md) | How Selena decides whether to enter agent mode |
+| [Memory system](./memory-system.md) | Core memory, live context, archives, vector memory |
 
-| 文档 | 说明 |
-|------|------|
-| [**整体架构**](./architecture.md) | 模块边界、数据流、扩展点 |
-| [**Agent 主循环**](./agent-loop.md) | 工具规划、token 预算、连续调用控制 |
-| [**意图路由**](./intent-routing.md) | 向量召回 + LLM 复核的混合判定 |
+## Subsystems
 
----
+| Document | What it covers |
+| --- | --- |
+| [Skill system](./skill-system.md) | Built-in skills, manifests, runtime modes, skill evolution |
+| [Browser agent](./browser-agent.md) | Snapshot-based browser operation and CDP-driven workflows |
+| [Subagent delegation](./subagent-delegation.md) | Built-in agent types, fan-out, quotas, and result handling |
+| [Autonomous mode](./autonomous-mode.md) | Idle-time planning, execution, sharing score, cooldown |
+| [MCP integration](./mcp-integration.md) | Registering external MCP servers and exposing their tools |
+| [Web workbench](./frontend-workbench.md) | Frontend panels, local API, and observability surfaces |
 
-## 🧩 子系统
+## Operations and safety
 
-| 文档 | 说明 |
-|------|------|
-| [**分层记忆系统**](./memory-system.md) | 关键记忆 / 话题档案 / 向量记忆 + TTL/温度/SearchScore |
-| [**技能系统**](./skill-system.md) | 9 个内置技能 + 技能演化 |
-| [**浏览器代理**](./browser-agent.md) | Chrome / Edge / Firefox via CDP |
-| [**子代理委派**](./subagent-delegation.md) | 6 种类型 + 并行 fan-out + wait-all |
-| [**自主任务模式**](./autonomous-mode.md) | 闲时规划 / 执行 / 分享分 / 冷却 |
-| [**MCP 协议集成**](./mcp-integration.md) | 动态接入外部工具服务器 |
-| [**Web 工作台**](./frontend-workbench.md) | 9 个面板介绍 |
+| Document | What it covers |
+| --- | --- |
+| [Security policy](./security-policy.md) | Tool whitelists, file roots, approvals, execution backends |
 
----
+## Documentation conventions
 
-## 🛡️ 进阶与运维
+- Public docs live in the repository root and under `docs/`.
+- Internal-only development notes in `DialogueSystem/docs/` stay out of the public doc tree.
+- Prefer short positioning at the top, tables for important knobs, and Mermaid diagrams for non-trivial flows.
+- Use relative links so the docs work both on GitHub and in local editors.
 
-| 文档 | 说明 |
-|------|------|
-| [**安全策略**](./security-policy.md) | 工具集白名单、文件 root、审批模式 |
-
----
-
-## 🗂️ 文档协作
-
-- 所有公开文档放在仓库根目录 `docs/` 下；`DialogueSystem/docs/` 是内部开发文档（gitignore）。
-- 写新文档时请保持一致风格：开头一句话定位、核心概念表格化、关键流程用 mermaid。
-- 跨文档引用使用相对路径，方便在 GitHub / 本地 IDE 都能正确跳转。
-
-如果你觉得某个机制还差一篇文档，欢迎[**提 Issue**](https://github.com/your-org/selena/issues) 或直接 PR。
+If you notice a gap in the public documentation, opening an issue or PR is always welcome.

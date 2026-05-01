@@ -1,66 +1,65 @@
-# DialogueSystem 目录说明
+[简体中文](./README.zh-CN.md)
 
-这个目录承载了对话系统的主运行时、静态资源以及运行期产物。下面按“维护时最常接触的内容”说明各部分职责，方便后续继续拆分和维护。
+# DialogueSystem Directory Guide
 
-## Python 模块
+This directory contains Selena's main runtime, static prompt assets, and runtime-generated artifacts. The sections below focus on the parts contributors are most likely to touch.
 
-- 根目录
-  - `main.py`：顶层运行入口，负责启动 Selena、维护对话上下文、做意图路由、调用 Agent 工具规划，并拉起后台摘要 worker。
-  - `Demo.py`：开发期手动测试脚本，不参与正式主循环。
-  - `__init__.py`：暴露包级公共导出。
+## Python modules
+
+- Root files
+  - `main.py`: top-level runtime entry that starts Selena, manages dialogue flow, performs intent routing, runs agent planning, and starts the background summary worker.
+  - `Demo.py`: manual development-time test script, not part of the main runtime loop.
+  - `__init__.py`: package-level exports.
 - `agent/`
-  - Agent 主循环、会话状态、子代理调度、token 预算，以及工具展示/结果压缩辅助。
+  - Agent loop, session state, delegation logic, token budgets, and tool display/result-compression helpers.
 - `autonomous/`
-  - 自主任务模式的规划、执行和 SQLite 日志持久化。
+  - Planning, execution, and SQLite persistence for autonomous task mode.
 - `browser/`
-  - 浏览器控制、兼容适配与增强型网页工具。
+  - Browser control, compatibility layers, and enhanced browser tools.
 - `config/`
-  - 统一路径常量、prompt / tool / skill 静态资源加载。
+  - Centralized path constants and loaders for prompts, tools, and skills.
 - `llm/`
-  - LLM / Embedding / Rerank HTTP 调用封装。
+  - HTTP wrappers for LLM, embedding, and rerank calls.
 - `memory/`
-  - 上下文记忆、话题历史、历史摘要 worker、本地记忆存储，以及摘要 worker 启动辅助。
+  - Context memory, topic history, summary workers, local memory storage, and summary-worker helpers.
 - `policy/`
-  - 工具元数据与安全策略判定。
+  - Tool metadata and security-policy decisions.
 - `runtime/`
-  - 动态工具、MCP 桥接和本地前端 API 运行时。
+  - Dynamic tools, MCP bridges, and the local frontend API runtime.
 - `services/`
-  - 用户侧服务能力，目前主要是日程提醒与任务管理。
+  - User-facing services, currently centered on reminders and task management.
 - `skill_system/`
-  - 技能加载、技能管理与技能市场相关逻辑。
+  - Skill loading, management, and related marketplace logic.
 
-## 静态资源目录
+## Static asset directories
 
 - `MdFile/`
-  - 存放系统 prompt 与意图示例生成 prompt，按功能分为子目录：
-    - `agent/` — Agent 与自主任务相关提示词
-    - `intent/` — 意图识别与路由提示词
-    - `memory/` — 记忆系统提示词
-    - `topic/` — 话题与上下文提示词
-    - `dialogue/` — 对话人设与基础提示词
-    - `skill/` — 技能系统提示词
-  - 这些文件直接影响模型行为，修改时应视为”运行逻辑的一部分”，不要随意改文案。
+  - System prompts and prompt templates, grouped by area:
+    - `agent/`
+    - `intent/`
+    - `memory/`
+    - `topic/`
+    - `dialogue/`
+    - `skill/`
+  - These files directly shape model behavior and should be treated as part of the runtime logic.
 - `tools/`
-  - 普通 function tool 的 JSON 定义，供 Agent 规划时使用。
+  - JSON definitions for standard function tools used during agent planning.
 - `skills/`
-  - 技能 manifest 及技能附带的工具定义。
-  - 当前 `web_access` 技能通过 builtin tool 让模型直接走联网搜索能力。
+  - Skill manifests and tool definitions bundled with each skill.
 
-## 运行期目录
+## Runtime directories
 
 - `history/`
-  - 原始对话历史落盘目录。
-  - `raw_dialogue_*.jsonl` 为会话原始消息文件，按 `topicGroup` 切分。
-  - `.summary_memory_state.json` 和 `.summary_memory_worker.lock` 为摘要 worker 的状态与锁文件。
+  - Persisted conversation history.
+  - `raw_dialogue_*.jsonl` stores raw session messages, grouped by `topicGroup`.
+  - `.summary_memory_state.json` and `.summary_memory_worker.lock` belong to the summary worker.
 - `logs/`
-  - 当前使用中的日志目录。
-  - `dialogue_system.log*` 记录主对话进程日志。
-  - `history_summary_worker*.log` 记录后台摘要 worker 日志。
+  - Runtime logs such as `dialogue_system.log*` and `history_summary_worker*.log`.
 - `__pycache__/`
-  - Python 运行期缓存，可忽略，不应手工维护。
+  - Python cache files; not something you should maintain manually.
 
-## 维护建议
+## Maintenance suggestions
 
-- 优先在对应功能子包内改动，再回到 `main.py` 调整入口拼装逻辑，风险会更低。
-- 如果后续继续拆 `main.py`，优先考虑沿着“意图路由”“RAG/长期记忆检索”“工具展示/审批”这几条边界继续下沉模块，避免回到单文件累积逻辑的状态。
-- `history/` 和 `logs/` 里的内容属于运行产物，排查问题时可看，但不建议把“给它们加注释”当成代码维护目标。
+- Prefer changing logic inside the appropriate subpackage before editing the top-level runtime assembly in `main.py`.
+- If you continue decomposing `main.py`, the cleanest boundaries are usually intent routing, retrieval/memory access, and tool approval/display flow.
+- Treat `history/` and `logs/` as runtime artifacts for debugging, not as source code that needs to be annotated or curated.

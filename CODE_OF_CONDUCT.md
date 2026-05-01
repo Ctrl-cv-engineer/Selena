@@ -1,32 +1,33 @@
+[简体中文](./CODE_OF_CONDUCT.zh-CN.md)
+
 # Code of Conduct
 
-这个项目欢迎认真、友好、愿意一起把事情做好的协作方式。
+This project welcomes thoughtful, respectful, and practical collaboration.
 
-简单说就是：
+In short:
 
-- 对人保持尊重，对事保持坦诚。
-- 默认大家是来解决问题的，不是来打擂台的。
-- 可以直接指出问题，但别阴阳怪气、羞辱别人或者故意制造敌意。
-- 对新手友好一点，对不同背景的人也友好一点。
-- 不要公开他人的隐私、密钥、敏感数据或不该外传的日志。
+- Be respectful to people and honest about the work.
+- Assume others are here to solve problems, not to compete for status.
+- Be direct about issues without being hostile or humiliating.
+- Be welcoming to beginners and contributors from different backgrounds.
+- Do not expose other people's private data, credentials, or sensitive logs.
 
-## 我们鼓励的行为
+## Behavior we encourage
 
-- 给出具体、可执行的反馈
-- 对自己的假设保持透明
-- 在 disagreement 的时候尽量回到事实、复现、代码和文档
-- 接受别人指出问题，也愿意修正自己的误判
+- Specific, actionable feedback
+- Transparent assumptions
+- Returning to facts, code, and reproducible cases during disagreements
+- Willingness to revise your own position when new evidence appears
 
-## 我们不接受的行为
+## Behavior we do not accept
 
-- 人身攻击、骚扰、歧视、威胁
-- 恶意挑衅、羞辱式评论、持续刷屏
-- 明知包含敏感信息还公开贴出
-- 故意破坏协作氛围
+- Personal attacks, harassment, discrimination, or threats
+- Repeated hostility or shame-driven commentary
+- Posting sensitive information that should have been redacted
+- Deliberately damaging the collaboration environment
 
-## 维护者会怎么处理
+## Maintainer actions
 
-维护者可以根据情况编辑、隐藏、锁定或删除不合适的内容，也可以拒绝继续和破坏协作的人互动。
+Maintainers may edit, hide, lock, or remove inappropriate content, and may choose not to continue engaging with people who repeatedly damage collaboration.
 
-这不是“管太多”，只是想让这个仓库对正常协作者来说是舒服的。
-
+The point is not to over-police discussion. It is to keep the repository workable and safe for normal contributors.
