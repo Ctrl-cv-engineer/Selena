@@ -1,420 +1,164 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/-SELENA-6366F1?style=for-the-badge&labelColor=1E1B4B" height="60" alt="Selena Logo" />
+<img src="./DialogueSystem/frontend/public/selena-iris-rounded.png" width="164" alt="Selena logo" />
 
-### 本地 AI Agent
+# Selena
 
-*Your local AI companion that remembers, learns, and acts on its own.*
-
-<br />
+一个尽量待在你电脑里、会记事、会调工具、你不在时也会自己做点事的本地 AI Agent。
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python\&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-Apache_2.0-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache_2.0-2EA44F.svg)](./LICENSE)
 [![Qdrant](https://img.shields.io/badge/Qdrant-Vector_DB-DC382D?logo=docker\&logoColor=white)](https://qdrant.tech/)
 [![React](https://img.shields.io/badge/Frontend-React_18-61DAFB?logo=react\&logoColor=white)](https://react.dev/)
 [![MCP](https://img.shields.io/badge/MCP-Compatible-FF6B6B)](https://modelcontextprotocol.io/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-<br />
-
-**[📖 文档](./docs/README.md)** ·
-**[🚀 快速开始](#-60-秒快速启动)** ·
-**[✨ 特性](#-核心特性)** ·
-**[🏗️ 架构](./docs/architecture.md)** ·
-**[⚙️ 配置](./CONFIG_REFERENCE.md)** ·
-**[🐳 部署](./DEPLOYMENT.md)**
+**[文档入口](./docs/README.md)** ·
+**[快速开始](#快速开始)** ·
+**[部署说明](./DEPLOYMENT.md)** ·
+**[配置参考](./CONFIG_REFERENCE.md)** ·
+**[贡献指南](./CONTRIBUTING.md)**
 
 </div>
 
 ***
 
-<br />
+## 这项目是干嘛的
 
-## ✨ 核心特性
+Selena 不是“换个皮的聊天框”。
 
-<table>
-<tr>
-<td width="33%" valign="top">
+它更像一个本地 AI companion / agent runtime：能记住长期上下文、会判断一句话到底该普通回复还是开 Agent、能接浏览器和 MCP 工具、还能在你暂时离开时自己跑一轮任务。
 
-### 🧠 分层长期记忆
+如果你想研究“一个相对完整的本地 Agent 系统到底长什么样”，这个仓库就是朝这个方向慢慢堆出来的。
 
-关键记忆 / 话题档案 / 向量记忆三层并存。每条记忆都有**温度**、**TTL**、**SearchScore**，会随使用频率升降级。
+## 现在已经能做的事
 
-[详情 →](./docs/memory-system.md)
+- `分层记忆`：关键记忆、话题上下文、Qdrant 向量长期记忆一起工作，不是聊完就失忆。
+- `意图路由`：先判断这一句值不值得进 Agent 模式，避免每句话都上大模型重武器。
+- `Agent 主循环`：带 token 预算、连续调用限制、工具结果压缩和检索缓存复用。
+- `技能系统`：除了内置技能，还支持把重复工具流沉淀成可复用技能。
+- `浏览器代理`：通过 CDP 控制浏览器做导航、点击、截图和跨标签页协作。
+- `子代理并行`：可以把调研、规划、review、test 之类的任务拆给多个子代理。
+- `自主任务模式`：用户静默时自动规划任务、执行、打分享分，回来再找机会提一嘴。
+- `Web 工作台`：React + TypeScript 前端，方便看状态、调配置、追踪调用。
 
-</td>
-<td width="33%" valign="top">
+## 快速开始
 
-### 🎯 智能意图路由
-
-向量召回 + LLM 复核的混合架构，毫秒级判断"这一句要不要启动 Agent"，避免对每个寒暄都开重武器。
-
-[详情 →](./docs/intent-routing.md)
-
-</td>
-<td width="33%" valign="top">
-
-### 🤖 Agent 主循环
-
-内建 token 预算、连续调用限制、工具结果压缩、检索缓存复用，跑长链路任务也不会跑飞。
-
-[详情 →](./docs/agent-loop.md)
-
-</td>
-</tr>
-<tr>
-<td width="33%" valign="top">
-
-### 🛠️ 可演化技能系统
-
-内置 9 个技能（浏览器、文档、日程、子代理…），并能**自动把重复的工具流沉淀成新技能**。
-
-[详情 →](./docs/skill-system.md)
-
-</td>
-<td width="33%" valign="top">
-
-### 🌐 浏览器代理
-
-通过 CDP 直接操控 Chrome / Edge / Firefox，导航、点击、截图、跨标签页协调，**无需 Playwright 或 Selenium**。
-
-[详情 →](./docs/browser-agent.md)
-
-</td>
-<td width="33%" valign="top">
-
-### 👥 子代理并行委派
-
-explore / research / plan / review / test / general 六种内置类型，支持并行 fan-out + wait-all。
-
-[详情 →](./docs/subagent-delegation.md)
-
-</td>
-</tr>
-<tr>
-<td width="33%" valign="top">
-
-### 🌙 自主任务模式
-
-你不在时它会自己规划任务、执行、给经历打"分享分"，回来时按冷却规则主动提及。
-
-[详情 →](./docs/autonomous-mode.md)
-
-</td>
-<td width="33%" valign="top">
-
-### 🔌 MCP 协议集成
-
-动态接入任何符合 Model Context Protocol 的外部工具服务器，零代码扩展能力边界。
-
-[详情 →](./docs/mcp-integration.md)
-
-</td>
-<td width="33%" valign="top">
-
-### 🎨 实时 Web 工作台
-
-内置 9 个可视化面板：对话、调试、配置编辑、向量库浏览、LLM 调用追踪、自主产物检视…
-
-[详情 →](./docs/frontend-workbench.md)
-
-</td>
-</tr>
-<tr>
-<td width="33%" valign="top">
-
-### 🛡️ 安全沙箱
-
-工具集白名单、文件根目录限制、审批模式、隔离执行后端，**默认拒绝高风险动作**。
-
-[详情 →](./docs/security-policy.md)
-
-</td>
-<td width="33%" valign="top">
-
-### 📄 一键文档生成
-
-将对话或检索结果直接导出为 PDF / Word / PowerPoint，适合"研究 → 成稿"的工作流。
-
-[详情 →](./docs/skill-system.md#document-generation)
-
-</td>
-<td width="33%" valign="top">
-
-### 🔄 多供应商 LLM
-
-qwen · kimi · minimax · deepseek · mimo · openrouter — 一份配置切换不同模型给不同任务用。
-
-[详情 →](./docs/llm-providers.md)
-
-</td>
-</tr>
-</table>
-
-<br />
-
-## 🚀 60 秒快速启动
-
-> **前置要求**：Python 3.9+、Docker 20.10+，以及至少一家 LLM 供应商的 API Key。
+> 前置要求：Python 3.9+、Docker 20.10+。如果你想手动跑前端，再准备一个 Node.js 18+。
 
 ```bash
-# 1. 克隆仓库
-git clone https://github.com/your-org/selena.git
-cd selena
+git clone <your-repo-url>
+cd Selena
 
-# 2. 准备配置（填入你的 API Key）
 cp config.example.json config.json
-# 编辑 config.json，把 sk-YOUR_*_API_KEY 替换为真实 Key
+# 把里面的 API Key 占位符替换成真实值
 
-# 3. 启动 Qdrant 向量库
-docker compose up -d
+python -m venv .venv
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
 
-# 4. 安装依赖（建议虚拟环境）
-python -m venv .venv && source .venv/bin/activate    # Windows: .venv\Scripts\activate
+pip install --upgrade pip
 pip install -r requirements.txt
 
-# 5. 运行
+docker compose up -d
+
 python -m DialogueSystem.main
 ```
 
-启动后默认地址：
+如果你想单独启动前端：
 
-| 服务                  | 地址                                |
-| ------------------- | --------------------------------- |
-| 💬 Web 工作台          | <http://127.0.0.1:5173>           |
-| 🔌 本地 API           | <http://127.0.0.1:8000>           |
-| 📊 Qdrant Dashboard | <http://127.0.0.1:6333/dashboard> |
+```bash
+cd DialogueSystem/frontend
+pnpm install
+pnpm dev
+```
 
-完整的部署细节、生产环境建议与常见问题：**[DEPLOYMENT.md](./DEPLOYMENT.md)**
+默认地址：
 
-<br />
+| 服务               | 地址                                |
+| ---------------- | --------------------------------- |
+| Web 工作台          | <http://127.0.0.1:5173>           |
+| 本地 API           | <http://127.0.0.1:8000>           |
+| Qdrant Dashboard | <http://127.0.0.1:6333/dashboard> |
 
-## 🏗️ 架构总览
+补充两句：
+
+- `config.json` 不应该提交到公共仓库，仓库里保留的是 `config.example.json`。
+- 如果 `Frontend.auto_start = true`，主程序会尝试自动拉起前端开发服务器。
+- 更完整的环境隔离、Docker、生产部署说明在 [DEPLOYMENT.md](./DEPLOYMENT.md)。
+
+## 架构一眼看懂
 
 ```mermaid
 flowchart TB
-    User([👤 用户输入]) --> Router{🎯 意图路由<br/>vector + LLM}
+    User["用户输入"] --> Router{"意图路由"}
+    Router -->|普通对话| Chat["Simple Reply / RolePlay"]
+    Router -->|需要工具| Agent["Agent 主循环"]
 
-    Router -->|轻量回复| Simple[💬 SimpleReply / RolePlay]
-    Router -->|需要工具| Agent[🤖 Agent 主循环]
+    Agent --> Skills["技能系统"]
+    Agent --> Browser["浏览器代理"]
+    Agent --> MCP["MCP 工具服务器"]
+    Agent --> Sub["子代理委派"]
 
-    Agent --> Tools[🛠️ 工具规划]
-    Tools --> Skills[🧩 技能系统]
-    Tools --> Browser[🌐 浏览器代理]
-    Tools --> SubAgent[👥 子代理委派]
-    Tools --> MCP[🔌 MCP 服务器]
+    Chat --> Memory["分层记忆"]
+    Agent --> Memory
 
-    Simple --> Memory
-    Agent --> Memory[🧠 分层记忆]
+    Memory --> Context["关键记忆"]
+    Memory --> Topic["话题上下文 / 归档"]
+    Memory --> Vector["Qdrant 长期记忆"]
 
-    Memory --> CtxMem[关键记忆<br/>ContextMemory]
-    Memory --> Topic[话题上下文<br/>+ 归档]
-    Memory --> Vector[(🗄️ Qdrant<br/>长期向量记忆)]
-
-    Idle([⏰ 用户静默]) --> Auto[🌙 自主任务模式]
+    Idle["用户静默"] --> Auto["自主任务模式"]
     Auto --> Agent
-    Auto --> Share[📤 分享分评估<br/>→ 下次提及]
-
-    Skills -.演化.-> Evo[🔄 SkillEvolution<br/>沉淀新技能]
 ```
 
-更详细的数据流、模块边界与扩展点：**[docs/architecture.md](./docs/architecture.md)**
+更细的架构说明可以直接翻这些文档：
 
-<br />
+- [docs/architecture.md](./docs/architecture.md)
+- [docs/agent-loop.md](./docs/agent-loop.md)
+- [docs/intent-routing.md](./docs/intent-routing.md)
+- [docs/memory-system.md](./docs/memory-system.md)
+- [docs/skill-system.md](./docs/skill-system.md)
 
-## 📚 文档导航
+## 仓库怎么逛
 
-<table>
-<tr>
-<td width="50%" valign="top">
-
-#### 🎓 上手
-
-- **[60 秒快速启动](#-60-秒快速启动)**
-- **[完整部署指南](./DEPLOYMENT.md)**
-- **[配置项参考](./CONFIG_REFERENCE.md)**
-- **[LLM 供应商接入](./docs/llm-providers.md)**
-
-#### 🏛️ 架构
-
-- **[整体架构与数据流](./docs/architecture.md)**
-- **[Agent 主循环详解](./docs/agent-loop.md)**
-- **[意图路由](./docs/intent-routing.md)**
-
-</td>
-<td width="50%" valign="top">
-
-#### 🧩 子系统
-
-- **[分层记忆系统](./docs/memory-system.md)**
-- **[技能系统与演化](./docs/skill-system.md)**
-- **[浏览器代理](./docs/browser-agent.md)**
-- **[子代理委派](./docs/subagent-delegation.md)**
-- **[自主任务模式](./docs/autonomous-mode.md)**
-- **[MCP 协议集成](./docs/mcp-integration.md)**
-
-#### 🛡️ 进阶
-
-- **[安全策略](./docs/security-policy.md)**
-- **[Web 工作台](./docs/frontend-workbench.md)**
-
-</td>
-</tr>
-</table>
-
-<br />
-
-## 🎯 适合谁
-
-<table>
-<tr>
-<td width="33%" valign="top">
-
-#### 🧪 研究者 / 极客
-
-想要一个**完整可改的 Agent 框架**，亲手调教记忆与 Prompt，研究"长期陪伴 AI"是怎么搭出来的。
-
-</td>
-<td width="33%" valign="top">
-
-#### 🎨 创作者 / 内容工作者
-
-让 AI 在闲时帮你刷新闻、读论文、整理素材，回来时直接拿到一份草稿。
-
-</td>
-<td width="33%" valign="top">
-
-#### 🏠 数字隐私倡导者
-
-所有对话、记忆、配置都在自己的硬盘上，**API Key 之外没有第三方收数据**。
-
-</td>
-</tr>
-</table>
-
-<br />
-
-## 💡 使用场景示例
-
-<details>
-<summary><b>💬 日常对话与长期记忆</b></summary>
-
-```
-你：我下周要去成都，帮我留意一下天气趋势。
-
-[Selena 调用 webSearch + storeLongTermMemory]
-[次日清晨自主任务模式触发]
-[Selena 调用 webSearch 抓取最新天气，写入近期经历]
-
-你（早上回来）：早。
-Selena：早。我刚看了下成都下周天气，周三有降温，
-       记得带件薄外套——你说过你怕冷。
+```text
+DialogueSystem/           主运行时：Agent、记忆、浏览器、MCP、前端 API
+DialogueSystem/frontend/  React + TypeScript 工作台
+docs/                     面向公开仓库的文档
+CONFIG_REFERENCE.md       config.json 字段说明
+DEPLOYMENT.md             部署与运行说明
+docker-compose.yml        Qdrant 启动配置
 ```
 
-</details>
+如果你是第一次进仓库，建议按这个顺序看：
 
-<details>
-<summary><b>🤖 Agent 自动调研 + 出文档</b></summary>
+1. 先看这份 README，知道项目大概在干嘛。
+2. 再看 [DEPLOYMENT.md](./DEPLOYMENT.md)，把环境真的跑起来。
+3. 然后按兴趣去读 [docs/README.md](./docs/README.md) 里的模块文档。
+4. 想改代码的话，再看 [DialogueSystem/README.md](./DialogueSystem/README.md)。
 
-```
-你：研究一下 Mamba 架构和 Transformer 的差异，输出一份 PDF。
+## 贡献、讨论和反馈
 
-[意图路由 → Agent 模式]
-[delegateTasksParallel: research × 2 子代理并行]
-  ├─ 子代理 A：搜原始论文 + 抽要点
-  └─ 子代理 B：搜社区 benchmark + 抽要点
-[waitForDelegatedTasks → 整合]
-[generateDocument → 导出 PDF]
-```
+- 想修 bug、补文档、加新技能、改体验，都欢迎。
+- 提 PR 前先看看 [CONTRIBUTING.md](./CONTRIBUTING.md)，能少来回很多。
+- 安全问题不要直接公开发 issue，先看 [SECURITY.md](./SECURITY.md)。
+- 社区协作边界写在 [CODE\_OF\_CONDUCT.md](./CODE_OF_CONDUCT.md)。
 
-</details>
+## 路线图
 
-<details>
-<summary><b>🌐 浏览器自动化</b></summary>
+- [x] 分层记忆
+- [x] 意图路由
+- [x] Agent 主循环
+- [x] 浏览器代理
+- [x] 子代理并行委派
+- [x] MCP 集成
+- [x] React 工作台
+- [x] Docker 化 Qdrant
+- [ ] 更完整的自动化测试与 CI
+- [ ] 更清晰的 release 节奏
+- [ ] 更多稳定的 demo / example workflows
 
-```
-你：打开 B 站搜《三体》并播放第一个视频。
+## 协议
 
-[chrome-browser-agent skill]
-  → browserNavigate(bilibili.com)
-  → browserSnapshot
-  → browserType(搜索框, "三体")
-  → browserPressKey(Enter)
-  → browserSnapshot
-  → browserClick(第一个结果 ref)
-```
+本项目使用 [Apache License 2.0](./LICENSE)。
 
-</details>
-
-<details>
-<summary><b>🌙 自主任务模式</b></summary>
-
-```
-[用户连续 5 分钟未输入]
-[idle_threshold 触发，进入自主模式]
-[task_planning：今日要做的 3 件事]
-  1. 看一下昨天讨论过的 RAG 论文进展
-  2. 整理一下用户上周提到的"想读的书单"
-  3. 写一段关于"安静"的随笔
-
-[逐个执行，落盘到 ATM 任务库]
-[sharing_score 评估 → 用户下次出现时择机提及]
-```
-
-</details>
-
-<br />
-
-## 🛣️ 路线图
-
-| 状态 | 模块                              |
-| -- | ------------------------------- |
-| ✅  | 分层记忆 / 意图路由 / Agent 主循环         |
-| ✅  | 9 个内置技能 + 技能演化                  |
-| ✅  | 浏览器代理 (Chrome / Edge / Firefox) |
-| ✅  | 子代理 6 种类型 + 并行委派                |
-| ✅  | 自主任务模式 + 分享分机制                  |
-| ✅  | MCP 协议集成                        |
-| ✅  | Web 工作台 (React + TypeScript)    |
-| ✅  | Docker 部署 (Selena + Qdrant)     |
-| 🚧 | 为Agent添加更多功能                    |
-| 📋 | 实现LLM驱动的文字冒险模式的开发               |
-| 📋 | 为项目赋予多模块能力                      |
-
-<br />
-
-## 🤝 贡献
-
-欢迎任何形式的贡献，从修一个错别字到提交一个新技能。请先阅读 **[CONTRIBUTING.md](./CONTRIBUTING.md)**（编写中）。
-
-发现 Bug 或有功能建议？请**[提交 Issue](https://github.com/your-org/selena/issues)**。
-
-<br />
-
-## 📜 协议
-
-本项目基于 **[Apache License 2.0](./LICENSE)** 开源。
-
-允许商用、修改、分发，**附带专利许可**。如果你基于 Selena 构建了有趣的项目，欢迎告诉我们，我们会很高兴。虽然我觉得也没人会。
-
-<br />
-
-## 🙏 致谢
-
-本项目基于以下开源项目完成：
-
-- **[Qdrant](https://qdrant.tech/)** — 高性能向量数据库
-- **[Model Context Protocol](https://modelcontextprotocol.io/)** — 工具集成开放协议
-- **[tiktoken](https://github.com/openai/tiktoken)** — Token 计数
-- **[React](https://react.dev/)** · **[Vite](https://vitejs.dev/)** · **[Ant Design](https://ant.design/)** — 前端栈
-- 以及所有提供 OpenAI 兼容 API 的国内外 LLM 供应商
-
-<br />
-
-<div align="center">
-
-**如果此项目对你有帮助，请点一颗 ⭐ Star 鼓励我们继续做下去。**
-
-<sub>Made with ☕ and a lot of late nights.</sub>
-
-</div>
+可以商用、可以修改、可以分发，也带专利许可。你要是真拿它做了点有意思的东西，欢迎告诉我一声。

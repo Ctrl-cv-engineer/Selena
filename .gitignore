@@ -79,6 +79,8 @@ AutonomousTaskTests/
 # ===== 构建与缓存 =====
 .vite/
 *.lock
+*.backup
+*.bak
 
 # ===== IDE =====
 .vscode/
