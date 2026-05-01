@@ -28,7 +28,7 @@ A local-first AI agent that remembers context, decides when to use tools, and ca
 
 Selena is not just a chat window with a nicer prompt.
 
-It is a local AI companion and agent runtime: it keeps layered memory, routes requests between normal dialogue and agent mode, talks to browsers and MCP tools, and can run autonomous tasks while you are away.
+It is a local AI agent runtime: it keeps layered memory, routes requests between normal dialogue and agent mode, talks to browsers and MCP tools, and can run autonomous tasks while you are away.
 
 If you want to study what a relatively complete local agent system looks like in practice, this repository is meant to be a real, editable example.
 
