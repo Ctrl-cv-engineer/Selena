@@ -28,6 +28,7 @@ try:
     )
     from ..config.resources import load_prompt_text, render_prompt_text
     from ..agent.token_counter import TokenCounter
+    from ..services.schedule_system import REMINDER_STATUS_REMINDED
 except ImportError:
     from DialogueSystem.llm.CallingAPI import call_LLM
     from DialogueSystem.memory.ChatContext import get_core_memory_section_specs, normalize_core_memory_state
@@ -45,6 +46,7 @@ except ImportError:
     )
     from DialogueSystem.config.resources import load_prompt_text, render_prompt_text
     from DialogueSystem.agent.token_counter import TokenCounter
+    from DialogueSystem.services.schedule_system import REMINDER_STATUS_REMINDED
 
 if TYPE_CHECKING:
     import threading
@@ -171,6 +173,7 @@ def _sync_tasks_to_schedule(dialogue_system, task_specs: list[dict], task_date: 
                 task_date=task_date,
                 reminder_time="00:00",
                 task_content=f"[ATM] {content}",
+                reminder_status=REMINDER_STATUS_REMINDED,
             )
         except Exception:
             logger.warning("Failed to sync ATM task to schedule | task=%s", content[:80], exc_info=True)

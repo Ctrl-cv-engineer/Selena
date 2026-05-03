@@ -2853,7 +2853,9 @@ class Selena:
             self._schedule_stop_event.wait(1.0)
 
     def _refresh_due_reminder_cache(self):
-        due_tasks = self.schedule_repository.get_due_unreminded_tasks(limit=20)
+        due_tasks = self._filter_due_reminder_tasks(
+            self.schedule_repository.get_due_unreminded_tasks(limit=100)
+        )[:20]
         new_cache = OrderedDict(
             (task["task_id"], task)
             for task in due_tasks
@@ -2865,8 +2867,38 @@ class Selena:
         with self._due_reminder_lock:
             cached_tasks = [dict(task) for task in self._due_reminder_cache.values()]
         if cached_tasks:
-            return cached_tasks
-        return self.schedule_repository.get_due_unreminded_tasks(limit=20)
+            return self._filter_due_reminder_tasks(cached_tasks)[:20]
+        return self._filter_due_reminder_tasks(
+            self.schedule_repository.get_due_unreminded_tasks(limit=100)
+        )[:20]
+
+    @staticmethod
+    def _is_autonomous_schedule_task(task: dict) -> bool:
+        task_content = str((task or {}).get("task_content", "") or "").strip()
+        return task_content.startswith("[ATM]")
+
+    def _filter_due_reminder_tasks(self, due_tasks):
+        filtered_tasks = []
+        autonomous_task_ids = []
+        for task in list(due_tasks or []):
+            if self._is_autonomous_schedule_task(task):
+                try:
+                    task_id = int((task or {}).get("task_id") or 0)
+                except (TypeError, ValueError):
+                    task_id = 0
+                if task_id > 0:
+                    autonomous_task_ids.append(task_id)
+                continue
+            filtered_tasks.append(task)
+        if autonomous_task_ids:
+            try:
+                self.schedule_repository.mark_tasks_reminded(autonomous_task_ids)
+            except Exception:
+                logger.exception(
+                    "Failed to acknowledge internal ATM schedule tasks | task_ids=%s",
+                    autonomous_task_ids,
+                )
+        return filtered_tasks
 
     @staticmethod
     def _build_due_reminder_context(task: dict):
