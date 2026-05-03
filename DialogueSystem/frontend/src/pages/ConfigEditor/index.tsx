@@ -341,6 +341,8 @@ const FIELD_DESCRIPTIONS: Record<string, string> = {
   "AutonomousTaskMode.sharing.min_score": "自主经历进入候选注入池的最低分享分。",
   "AutonomousTaskMode.sharing.cooldown_days": "某条自主经历被提到后再次注入前需要冷却的天数。",
   "AutonomousTaskMode.sharing.max_inject_count": "单轮对话最多允许注入多少条自主经历。",
+  "AutonomousTaskMode.sharing.max_recent_experiences": "近期经历与感受 system prompt 最多保留多少条。",
+  "AutonomousTaskMode.sharing.recent_experience_lifetime_days": "近期经历与感受中单条内容最多保留多少天，超过后释放位置给排队内容。",
   "AutonomousTaskMode.sharing.mention_detection.embedding_threshold": "用向量相似度判断回复已经提及该经历时的阈值。",
   "AutonomousTaskMode.sharing.mention_detection.keyword_min_hits": "用关键词重叠判断已经提及时的最少命中数。",
   "VectorSetting.Top_k": "向量检索的初始召回条数。",

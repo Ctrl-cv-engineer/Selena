@@ -430,6 +430,8 @@
             "min_score": 8,
             "cooldown_days": 3,
             "max_inject_count": 5,
+            "max_recent_experiences": 3,
+            "recent_experience_lifetime_days": 3,
             "mention_detection": {
                 "embedding_threshold": 0.72,
                 "keyword_min_hits": 2

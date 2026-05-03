@@ -145,6 +145,16 @@ def _get_context_memory_config() -> dict:
     return merged
 
 
+def _get_recent_experiences_max_items(default: int = 3) -> int:
+    """读取近期经历独立上限；缺省时回退到 section 默认值。"""
+    try:
+        sharing_config = ((config.get("AutonomousTaskMode", {}) or {}).get("sharing", {}) or {})
+        configured_limit = sharing_config.get("max_recent_experiences", default)
+        return max(1, int(configured_limit))
+    except (TypeError, ValueError):
+        return max(1, int(default))
+
+
 def build_default_core_memory_state() -> dict:
     """构造空的关键记忆结构。每个 section 是 dict item 列表（id+text+时间戳）。"""
     return {
@@ -357,6 +367,8 @@ def normalize_core_memory_state(raw_state: dict, *, config_override: dict = None
         for spec in _get_core_memory_section_specs():
             section_key = spec["key"]
             section_limit = min(max_items_per_section, int(spec["preferred_items"]))
+            if section_key == RECENT_EXPERIENCES_SECTION_KEY:
+                section_limit = _get_recent_experiences_max_items(section_limit)
             section_max_item_chars = int(spec.get("max_item_chars") or max_item_chars)
             normalized_state[section_key] = _normalize_core_memory_items(
                 raw_state.get(section_key),

@@ -3077,14 +3077,20 @@ class Selena:
             return True
         return False
 
-    def _mark_recent_experience_items_mentioned(self, items) -> None:
-        mentioned_items = [
+    def _mark_recent_experience_items_in_cooldown(
+        self,
+        items,
+        *,
+        increment_mention_count: bool = False,
+        expired: bool = False,
+    ) -> None:
+        cooldown_items = [
             dict(item)
             for item in list(items or [])
             if isinstance(item, dict)
             and str(item.get("source_memory_id", "") or "").strip()
         ]
-        if not mentioned_items or Qdrant is None:
+        if not cooldown_items or Qdrant is None:
             return
         try:
             memory_qdrant = self._get_or_create_search_qdrant("_memory_qdrant", self._memory_collection)
@@ -3093,24 +3099,41 @@ class Selena:
             return
 
         timestamp = time.time()
-        for item in mentioned_items:
+        for item in cooldown_items:
             memory_id = str(item.get("source_memory_id", "") or "").strip()
-            next_mention_count = max(0, self._safe_int(item.get("mention_count"), 0)) + 1
+            payload = {
+                "last_mentioned_at": timestamp,
+                "updated_at": timestamp,
+            }
+            if increment_mention_count:
+                payload["mention_count"] = max(0, self._safe_int(item.get("mention_count"), 0)) + 1
+            if expired:
+                payload["recent_experience_expired_at"] = timestamp
             try:
                 memory_qdrant.client.set_payload(
                     collection_name=memory_qdrant.CollectionName,
-                    payload={
-                        "last_mentioned_at": timestamp,
-                        "mention_count": next_mention_count,
-                        "updated_at": timestamp,
-                    },
+                    payload=payload,
                     points=[memory_id],
                 )
             except Exception:
                 logger.exception(
-                    "Failed to update recent experience mention payload | memory_id=%s",
+                    "Failed to update recent experience cooldown payload | memory_id=%s",
                     memory_id,
                 )
+
+    def _mark_recent_experience_items_mentioned(self, items) -> None:
+        self._mark_recent_experience_items_in_cooldown(
+            items,
+            increment_mention_count=True,
+            expired=False,
+        )
+
+    def _mark_recent_experience_items_expired(self, items) -> None:
+        self._mark_recent_experience_items_in_cooldown(
+            items,
+            increment_mention_count=False,
+            expired=True,
+        )
 
     def _maintain_recent_experiences_with_core_memory(
         self,
@@ -3127,7 +3150,20 @@ class Selena:
             ),
             {},
         )
-        max_items = max(1, self._safe_int(recent_experience_spec.get("preferred_items"), 3))
+        sharing_config = ((self.config or {}).get("AutonomousTaskMode", {}) or {}).get("sharing", {}) or {}
+        max_items = max(
+            1,
+            self._safe_int(
+                sharing_config.get("max_recent_experiences"),
+                self._safe_int(recent_experience_spec.get("preferred_items"), 3),
+            ),
+        )
+        lifetime_days = max(
+            0.0,
+            self._safe_float(sharing_config.get("recent_experience_lifetime_days"), 3.0),
+        )
+        now = time.time()
+        expire_before = now - (lifetime_days * 86400) if lifetime_days > 0 else None
         current_items = [
             dict(item)
             for item in list(next_state.get("recent_experiences") or [])
@@ -3143,8 +3179,16 @@ class Selena:
         )
 
         mentioned_items = []
+        expired_items = []
         retained_items = []
         for item in current_items:
+            item_created_at = self._safe_float(
+                item.get("created_at") or item.get("updated_at"),
+                now,
+            )
+            if expire_before is not None and item_created_at < expire_before:
+                expired_items.append(item)
+                continue
             if self._is_recent_experience_mentioned(item, recent_dialogue_text):
                 mentioned_items.append(item)
                 continue
@@ -3152,8 +3196,15 @@ class Selena:
 
         if mentioned_items:
             self._mark_recent_experience_items_mentioned(mentioned_items)
+        if expired_items:
+            self._mark_recent_experience_items_expired(expired_items)
 
         candidate_memories = self._query_experience_memory_candidates()
+        expired_memory_ids = {
+            str(item.get("source_memory_id", "") or "").strip()
+            for item in expired_items
+            if str(item.get("source_memory_id", "") or "").strip()
+        }
         existing_memory_ids = {
             str(item.get("source_memory_id", "") or "").strip()
             for item in retained_items
@@ -3164,16 +3215,17 @@ class Selena:
             for item in retained_items
             if str(item.get("text", "") or "").strip()
         }
-        timestamp = time.time()
         added_count = 0
         for record in candidate_memories:
             if len(retained_items) >= max_items:
                 break
-            new_item = self._build_recent_experience_core_memory_item(record, now=timestamp)
+            new_item = self._build_recent_experience_core_memory_item(record, now=now)
             if not new_item:
                 continue
             memory_id = str(new_item.get("source_memory_id", "") or "").strip()
             text = str(new_item.get("text", "") or "").strip()
+            if memory_id and memory_id in expired_memory_ids:
+                continue
             if memory_id and memory_id in existing_memory_ids:
                 continue
             if text in existing_texts:
@@ -3188,11 +3240,14 @@ class Selena:
         next_state["recent_experiences"] = retained_items
         updated_state = normalize_core_memory_state(next_state)
         logger.info(
-            "Recent experiences maintained | final_count=%s | removed=%s | added=%s | candidate_count=%s",
+            "Recent experiences maintained | final_count=%s | mentioned_removed=%s | expired_removed=%s | added=%s | candidate_count=%s | max_items=%s | lifetime_days=%s",
             len(updated_state.get("recent_experiences") or []),
             len(mentioned_items),
+            len(expired_items),
             added_count,
             len(candidate_memories),
+            max_items,
+            lifetime_days,
         )
         return updated_state
 
