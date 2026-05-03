@@ -4651,6 +4651,14 @@ class Selena:
             if task_context.get("expected_goal"):
                 context_parts.append(f"Expected goal:\n{task_context['expected_goal']}")
 
+            if task_context.get("resume_snapshot"):
+                context_parts.append(
+                    "Continuation snapshot from previous interrupted run:\n"
+                    f"{task_context['resume_snapshot']}\n\n"
+                    "Continue from this snapshot. Do not repeat completed work unless it is needed "
+                    "to verify state; focus on the remaining unfinished portion."
+                )
+
             if task_context.get("workspace_root"):
                 context_parts.append(f"Workspace root:\n{task_context['workspace_root']}")
 

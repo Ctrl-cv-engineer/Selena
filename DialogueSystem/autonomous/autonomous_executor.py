@@ -94,6 +94,8 @@ DEFAULT_SHARE_SCORE_CONFIG = {
     "reasoning_effort": "high",
 }
 AUTONOMOUS_TASK_SPEAKER = "Assistant"
+TOKEN_LIMIT_REASON = "token_limit"
+RESUME_SNAPSHOT_MAX_CHARS = 12000
 
 
 def _resolve_autonomous_task_speaker() -> str:
@@ -139,6 +141,77 @@ def _preview_log_text(value, *, limit: int = 160) -> str:
     if len(normalized_text) <= limit:
         return normalized_text
     return f"{normalized_text[: max(0, limit - 3)]}..."
+
+
+def _truncate_resume_snapshot(value: str, *, limit: int = RESUME_SNAPSHOT_MAX_CHARS) -> str:
+    normalized_text = str(value or "").strip()
+    if len(normalized_text) <= limit:
+        return normalized_text
+    return normalized_text[: max(0, limit - 80)].rstrip() + "\n...[resume snapshot truncated]"
+
+
+def _serialize_snapshot_value(value) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value.strip()
+    if isinstance(value, (list, tuple, set, dict)) and not value:
+        return ""
+    try:
+        return json.dumps(value, ensure_ascii=False, default=str, indent=2)
+    except Exception:
+        return str(value)
+
+
+def _build_task_resume_snapshot(
+    task: dict | None,
+    *,
+    runtime_task_snapshot: dict | None = None,
+    reason: str = "",
+) -> str:
+    """Build a compact continuation snapshot for tomorrow's carried-over ATM task."""
+    task = dict(task or {})
+    runtime_task_snapshot = dict(runtime_task_snapshot or {})
+    lines = []
+
+    task_content = str(task.get("task_content") or "").strip()
+    expected_goal = str(task.get("expected_goal") or "").strip()
+    if task_content:
+        lines.append(f"原任务：{task_content}")
+    if expected_goal:
+        lines.append(f"预期目标：{expected_goal}")
+    if reason:
+        lines.append(f"中断原因：{reason}")
+
+    runtime_status = str(runtime_task_snapshot.get("status") or "").strip()
+    if runtime_status:
+        lines.append(f"子 Agent 最后状态：{runtime_status}")
+    status_message = str(runtime_task_snapshot.get("status_message") or "").strip()
+    if status_message:
+        lines.append(f"最后状态说明：{status_message}")
+
+    for label, value in (
+        ("上一轮续跑现场", task.get("resume_snapshot")),
+        ("已记录执行日志", task.get("execution_log")),
+        ("子 Agent 结果", runtime_task_snapshot.get("result")),
+        ("子 Agent 错误", runtime_task_snapshot.get("error")),
+        ("结构化输出", runtime_task_snapshot.get("structured_output")),
+    ):
+        serialized = _serialize_snapshot_value(value)
+        if serialized:
+            lines.append(f"{label}：\n{serialized}")
+
+    tool_trace = runtime_task_snapshot.get("tool_trace")
+    if tool_trace:
+        recent_trace = list(tool_trace or [])[-12:]
+        serialized_trace = _serialize_snapshot_value(recent_trace)
+        if serialized_trace:
+            lines.append(f"已完成的最近工具步骤：\n{serialized_trace}")
+
+    snapshot = "\n\n".join(part for part in lines if str(part or "").strip())
+    if not snapshot:
+        snapshot = "任务因 token 限制中断，但没有可用的详细执行现场。请根据原任务目标继续完成剩余部分。"
+    return _truncate_resume_snapshot(snapshot)
 
 
 def _resolve_session_lease_timeout_seconds(config: dict | None) -> int:
@@ -453,6 +526,79 @@ def _resolve_session_finish_reason(task_log: AutonomousTaskLog, session_date: st
     return "partial"
 
 
+def _is_token_limit_paused_task(task: dict | None) -> bool:
+    if not isinstance(task, dict):
+        return False
+    status = str(task.get("status") or "").strip().lower()
+    pause_reason = str(task.get("pause_reason") or "").strip().lower()
+    return (
+        pause_reason == TOKEN_LIMIT_REASON
+        and status in {TASK_STATUS_PAUSED, TASK_STATUS_INTERRUPT_REQUESTED}
+    )
+
+
+def _build_token_limit_summary_records(
+    *,
+    session_date: str,
+    session_record: dict | None,
+    token_limit_tasks: list[dict],
+) -> list[dict]:
+    """Build explicit summary records for ATM interruptions caused by token limits."""
+    records = []
+    session_record = dict(session_record or {})
+    token_limit_tasks = [task for task in list(token_limit_tasks or []) if isinstance(task, dict)]
+    finish_reason = str(session_record.get("finish_reason") or "").strip().lower()
+
+    if finish_reason == TOKEN_LIMIT_REASON:
+        affected_task_titles = []
+        for task in token_limit_tasks:
+            title = str(task.get("task_content") or "").strip()
+            if title:
+                affected_task_titles.append(title)
+        session_lines = [
+            "事件说明：本次 ATM 会话因为 token 限制停止，后续自主任务行动没有继续执行。",
+            f"会话日期：{session_date}",
+            f"结束原因：{TOKEN_LIMIT_REASON}",
+            f"会话累计输入 token：{max(0, _safe_int(session_record.get('total_input_tokens', 0), default=0))}",
+            f"会话累计输出 token：{max(0, _safe_int(session_record.get('total_output_tokens', 0), default=0))}",
+        ]
+        if affected_task_titles:
+            session_lines.append(
+                "受影响任务：" + "；".join(affected_task_titles[:5])
+            )
+        records.append(
+            {
+                "role": "user",
+                "content": f"[自主任务中断] {session_date} 的 ATM 会话因 token 限制停止。",
+            }
+        )
+        records.append({"role": "assistant", "content": "\n".join(session_lines)})
+
+    for task in token_limit_tasks:
+        task_content = str(task.get("task_content") or "").strip()
+        expected_goal = str(task.get("expected_goal") or "").strip()
+        user_lines = [f"[自主任务中断] {task_content or '未命名任务'}"]
+        if expected_goal:
+            user_lines.append(f"预期目标：{expected_goal}")
+
+        assistant_lines = [
+            "事件说明：该 ATM 子任务在执行中因为 token 限制被中断，Agent 行动已停止。",
+            f"任务状态：{str(task.get('status') or '').strip() or 'unknown'}",
+            f"暂停原因：{str(task.get('pause_reason') or '').strip() or TOKEN_LIMIT_REASON}",
+            f"任务累计输入 token：{max(0, _safe_int(task.get('token_usage_input', 0), default=0))}",
+            f"任务累计输出 token：{max(0, _safe_int(task.get('token_usage_output', 0), default=0))}",
+        ]
+        execution_log = str(task.get("execution_log") or task.get("resume_snapshot") or "").strip()
+        if execution_log:
+            assistant_lines.append(f"已记录的执行上下文：{execution_log}")
+        else:
+            assistant_lines.append("已记录的执行上下文：任务在 token 限制触发时被中断，暂无完整执行结果。")
+        records.append({"role": "user", "content": "\n".join(user_lines)})
+        records.append({"role": "assistant", "content": "\n".join(assistant_lines)})
+
+    return records
+
+
 def _load_summary_memory_helpers():
     try:
         from ..memory.history_summary_worker import (
@@ -659,9 +805,18 @@ def summarize_autonomous_session(dialogue_system, task_log: AutonomousTaskLog, s
         if isinstance(task, dict)
         and str(task.get("status") or "").strip().lower() == TASK_STATUS_COMPLETED
     ]
-    if not completed_tasks:
+    session_record = task_log.get_or_create_daily_session(session_date) or {}
+    token_limit_tasks = [
+        task for task in list(tasks or []) if _is_token_limit_paused_task(task)
+    ]
+    token_limit_records = _build_token_limit_summary_records(
+        session_date=session_date,
+        session_record=session_record,
+        token_limit_tasks=token_limit_tasks,
+    )
+    if not completed_tasks and not token_limit_records:
         logger.info(
-            "Skip autonomous session summary | session_date=%s | reason=no_completed_tasks",
+            "Skip autonomous session summary | session_date=%s | reason=no_summary_source_records",
             session_date,
         )
         return []
@@ -727,6 +882,7 @@ def summarize_autonomous_session(dialogue_system, task_log: AutonomousTaskLog, s
             execution_log = "任务已完成，但当前没有可用的执行记录。"
         records.append({"role": "user", "content": user_content})
         records.append({"role": "assistant", "content": execution_log})
+    records.extend(token_limit_records)
     if not records:
         logger.info(
             "Skip autonomous session summary | session_date=%s | reason=no_summary_records",
@@ -735,9 +891,17 @@ def summarize_autonomous_session(dialogue_system, task_log: AutonomousTaskLog, s
         return []
 
     summary_caller = f"autonomous_task.summary.{session_date}"
+    summary_prompt = render_prompt_text("SummaryMermory")
+    if token_limit_records:
+        summary_prompt = (
+            f"{summary_prompt}\n\n"
+            "额外要求：如果 records 中包含 [自主任务中断]，必须至少输出一条 Fact 类型记忆，"
+            "明确说明 ATM 会话或子任务因 token 限制中断，后续自主行动已停止；"
+            "不要把这个 token 限制中断事件标记为 Disposable，也不要忽略它。"
+        )
     raw_memories = summarize_records(
         records=records,
-        summary_prompt=render_prompt_text("SummaryMermory"),
+        summary_prompt=summary_prompt,
         model_key=summary_model_key,
         session=dialogue_system.session,
         reasoning_effort="high",
@@ -803,9 +967,10 @@ def summarize_autonomous_session(dialogue_system, task_log: AutonomousTaskLog, s
         caller_prefix=conflict_caller_prefix,
     )
     logger.info(
-        "Autonomous session summary persisted | session_date=%s | task_count=%s | memory_count=%s",
+        "Autonomous session summary persisted | session_date=%s | completed_task_count=%s | token_limit_event_count=%s | memory_count=%s",
         session_date,
         len(completed_tasks),
+        len(token_limit_records) // 2,
         len(scored_memories),
     )
     return scored_memories
@@ -893,11 +1058,16 @@ def generate_daily_plan(
 
     carryover_tasks = task_log.get_pending_carryover_tasks(yesterday)
     for task in carryover_tasks[:max_tasks]:
+        resume_snapshot = _build_task_resume_snapshot(
+            task,
+            reason=str(task.get("pause_reason") or "carried_over").strip(),
+        )
         task_log.create_task(
             task_date=today,
             task_content=task.get("task_content") or "",
             expected_goal=task.get("expected_goal") or "",
             source=TASK_SOURCE_CARRIED_OVER,
+            resume_snapshot=resume_snapshot,
             carry_over_from_date=task.get("task_date") or yesterday,
             carry_over_from_id=task.get("id"),
         )
@@ -1157,7 +1327,7 @@ def run_daily_autonomous_session(
                     return task_log.get_or_create_daily_session(today)
                 can_continue, _ = token_counter.check_session_budget(task_log, today)
                 if not can_continue:
-                    finish_reason = "token_limit"
+                    finish_reason = TOKEN_LIMIT_REASON
                     logger.warning(
                         "Autonomous daily session stopped by token budget | session_date=%s",
                         today,
@@ -1190,6 +1360,14 @@ def run_daily_autonomous_session(
                     refreshed_task.get("status") or "",
                     refreshed_task.get("pause_reason") or "",
                 )
+                if _is_token_limit_paused_task(refreshed_task):
+                    finish_reason = TOKEN_LIMIT_REASON
+                    logger.warning(
+                        "Autonomous daily session stopped after task hit token budget | session_date=%s | task_id=%s",
+                        today,
+                        current_task.get("id"),
+                    )
+                    break
                 if interrupt_event.is_set():
                     return task_log.get_or_create_daily_session(today)
             if not finish_reason:
@@ -1211,7 +1389,7 @@ def run_daily_autonomous_session(
         )
         if (
             _safe_bool(atm_config.get("summary_on_complete"), default=True)
-            and finish_reason in {"all_completed", "token_limit"}
+            and finish_reason in {"all_completed", TOKEN_LIMIT_REASON}
         ):
             try:
                 summarize_autonomous_session(dialogue_system, task_log, today)
@@ -1474,14 +1652,14 @@ def execute_single_task(
             )
             can_continue_task, task_reason = token_counter.check_task_budget(task_log, task_id)
             if not can_continue_session or not can_continue_task:
-                budget_reason = session_reason or task_reason or "token_limit"
+                budget_reason = session_reason or task_reason or TOKEN_LIMIT_REASON
                 logger.warning(
                     "Autonomous task reached token budget | task_id=%s | attempt_id=%s | budget_reason=%s",
                     task_id,
                     attempt_id,
                     budget_reason,
                 )
-                task_log.request_task_interrupt(task_id, attempt_id, reason="token_limit")
+                task_log.request_task_interrupt(task_id, attempt_id, reason=TOKEN_LIMIT_REASON)
                 runtime.cancel_task(
                     subagent_task_id,
                     reason=f"Autonomous task reached token limit: {budget_reason}",
@@ -1492,17 +1670,30 @@ def execute_single_task(
                     timeout=cancel_wait_seconds,
                     poll_interval=execution_config["poll_interval_seconds"],
                 )
+                latest_task = task_log.get_task(task_id) or task
+                runtime_task_snapshot = {}
+                try:
+                    latest_status = runtime.get_status(subagent_task_id)
+                    if latest_status.get("ok", False):
+                        runtime_task_snapshot = dict(latest_status.get("task") or {})
+                except Exception:
+                    logger.exception(
+                        "Failed to capture token-limit runtime snapshot | task_id=%s | attempt_id=%s | runtime_task_id=%s",
+                        task_id,
+                        attempt_id,
+                        subagent_task_id,
+                    )
+                continuation_snapshot = _build_task_resume_snapshot(
+                    latest_task,
+                    runtime_task_snapshot=runtime_task_snapshot,
+                    reason=TOKEN_LIMIT_REASON,
+                )
                 if confirmed:
-                    latest_task = task_log.get_task(task_id) or task
                     task_log.mark_task_paused(
                         task_id,
                         attempt_id,
-                        reason="token_limit",
-                        resume_snapshot=str(
-                            latest_task.get("execution_log")
-                            or latest_task.get("resume_snapshot")
-                            or ""
-                        ),
+                        reason=TOKEN_LIMIT_REASON,
+                        resume_snapshot=continuation_snapshot,
                     )
                     logger.info(
                         "Autonomous task paused after confirmed token-limit cancellation | task_id=%s | attempt_id=%s",
@@ -1510,16 +1701,11 @@ def execute_single_task(
                         attempt_id,
                     )
                 else:
-                    latest_task = task_log.get_task(task_id) or task
                     task_log.mark_task_paused_pending_attempt_exit(
                         task_id,
                         attempt_id,
-                        reason="token_limit",
-                        resume_snapshot=str(
-                            latest_task.get("execution_log")
-                            or latest_task.get("resume_snapshot")
-                            or ""
-                        ),
+                        reason=TOKEN_LIMIT_REASON,
+                        resume_snapshot=continuation_snapshot,
                     )
                     logger.warning(
                         "Autonomous task pause pending runtime exit after token-limit cancellation | task_id=%s | attempt_id=%s | runtime_task_id=%s",

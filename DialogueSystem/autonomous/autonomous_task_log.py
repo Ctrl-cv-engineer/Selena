@@ -803,12 +803,14 @@ class AutonomousTaskLog:
         task_content,
         expected_goal="",
         source=TASK_SOURCE_SELF_GENERATED,
+        resume_snapshot="",
         carry_over_from_date=None,
         carry_over_from_id=None,
     ):
         normalized_task_date = normalize_task_date(task_date)
         normalized_task_content = _normalize_required_text(task_content, "task_content")
         normalized_expected_goal = str(_normalize_optional_input(expected_goal) or "")
+        normalized_resume_snapshot = str(_normalize_optional_input(resume_snapshot) or "")
         normalized_source = _normalize_status(
             source,
             valid_values=VALID_TASK_SOURCES,
@@ -871,11 +873,12 @@ class AutonomousTaskLog:
                     expected_goal,
                     status,
                     source,
+                    resume_snapshot,
                     carry_over_from_date,
                     carry_over_from_id,
                     created_at,
                     updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
                     normalized_task_date,
@@ -883,6 +886,7 @@ class AutonomousTaskLog:
                     normalized_expected_goal,
                     TASK_STATUS_PENDING,
                     normalized_source,
+                    normalized_resume_snapshot,
                     normalized_carry_over_date,
                     normalized_carry_over_id,
                     current_time,
@@ -1470,6 +1474,36 @@ class AutonomousTaskLog:
                 ),
             )
             connection.commit()
+        return self.get_task(task_id)
+
+    def update_task_resume_snapshot(self, task_id: int, resume_snapshot: str):
+        normalized_resume_snapshot = str(_normalize_optional_input(resume_snapshot) or "")
+        if not normalized_resume_snapshot:
+            return self.get_task(task_id)
+        current_time = _now_text()
+        with self._lock, self._connect() as connection:
+            task = self._get_task_locked(connection, task_id)
+            if task is None:
+                return None
+            connection.execute(
+                """
+                UPDATE autonomous_tasks
+                SET resume_snapshot = ?,
+                    updated_at = ?
+                WHERE id = ?
+                """,
+                (
+                    normalized_resume_snapshot,
+                    current_time,
+                    int(task_id),
+                ),
+            )
+            connection.commit()
+        logger.info(
+            "Autonomous task resume snapshot updated | task_id=%s | chars=%s",
+            task_id,
+            len(normalized_resume_snapshot),
+        )
         return self.get_task(task_id)
 
     def _is_attempt_stale(self, attempt: dict | None, stale_timeout_seconds: int) -> bool:
