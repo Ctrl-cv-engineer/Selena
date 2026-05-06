@@ -213,6 +213,41 @@ def _normalize_tool_arg_keys(self, tool_definition: dict, function_args: dict) -
         for key in props
         if _normalize_arg_token(key) in limit_like_tokens
     ]
+    timeout_like_tokens = {
+        "timeout",
+        "timeoutms",
+        "timeoutmillis",
+        "timeoutmilliseconds",
+        "timeoutsec",
+        "timeoutsecs",
+        "timeoutsecond",
+        "timeoutseconds",
+    }
+    timeout_alias_tokens = {
+        "time",
+        "timems",
+        "timemillis",
+        "timemilliseconds",
+        "timesec",
+        "timesecs",
+        "timesecond",
+        "timeseconds",
+        "wait",
+        "waitms",
+        "delay",
+        "delayms",
+        "duration",
+        "durationms",
+        "ms",
+        "milliseconds",
+        "seconds",
+        "secs",
+    }
+    timeout_like_keys = [
+        key
+        for key in props
+        if _normalize_arg_token(key) in timeout_like_tokens
+    ]
     normalized = {}
     for k, v in function_args.items():
         incoming_token = _normalize_arg_token(k)
@@ -231,6 +266,12 @@ def _normalize_tool_arg_keys(self, tool_definition: dict, function_args: dict) -
             and len(limit_like_keys) == 1
         ):
             canonical = limit_like_keys[0]
+        if (
+            canonical is None
+            and incoming_token in timeout_alias_tokens
+            and len(timeout_like_keys) == 1
+        ):
+            canonical = timeout_like_keys[0]
         normalized[canonical if canonical else k] = v
     return normalized
 
@@ -244,6 +285,7 @@ def execute_tool_call(self, tool_call: dict):
     )
     function_args = self._parse_tool_call_arguments(tool_call)
     tool_definition = self._resolve_tool_definition(function_name)
+    function_args = self._normalize_tool_arg_keys(tool_definition, function_args)
     policy_result = self.tool_policy_engine.evaluate_tool_call(
         tool_definition,
         function_args,

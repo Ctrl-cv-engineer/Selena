@@ -13,6 +13,74 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
+def _normalize_arg_token(value) -> str:
+    return "".join(ch for ch in str(value or "").lower() if ch.isalnum())
+
+
+def _map_handler_arguments(handler, arguments: dict) -> dict:
+    import inspect
+
+    raw_args = dict(arguments or {})
+    try:
+        sig = inspect.signature(handler)
+    except (ValueError, TypeError):
+        return raw_args
+
+    param_lookup = {
+        _normalize_arg_token(name): name
+        for name in sig.parameters
+        if _normalize_arg_token(name)
+    }
+    timeout_like_tokens = {
+        "timeout",
+        "timeoutms",
+        "timeoutmillis",
+        "timeoutmilliseconds",
+        "timeoutsec",
+        "timeoutsecs",
+        "timeoutsecond",
+        "timeoutseconds",
+    }
+    timeout_alias_tokens = {
+        "time",
+        "timems",
+        "timemillis",
+        "timemilliseconds",
+        "timesec",
+        "timesecs",
+        "timesecond",
+        "timeseconds",
+        "wait",
+        "waitms",
+        "delay",
+        "delayms",
+        "duration",
+        "durationms",
+        "ms",
+        "milliseconds",
+        "seconds",
+        "secs",
+    }
+    timeout_like_params = [
+        name
+        for token, name in param_lookup.items()
+        if token in timeout_like_tokens
+    ]
+
+    mapped_args = {}
+    for key, value in raw_args.items():
+        incoming_token = _normalize_arg_token(key)
+        canonical = param_lookup.get(incoming_token)
+        if (
+            canonical is None
+            and incoming_token in timeout_alias_tokens
+            and len(timeout_like_params) == 1
+        ):
+            canonical = timeout_like_params[0]
+        mapped_args[canonical if canonical else key] = value
+    return mapped_args
+
+
 class SkillToolRegistry:
     def __init__(self, owner):
         self.owner = owner
@@ -32,30 +100,12 @@ class SkillToolRegistry:
         return str(tool_name or "").strip() in self._handlers
 
     def execute(self, tool_name: str, arguments: dict):
-        import inspect
-
         normalized_tool_name = str(tool_name or "").strip()
         handler = self._handlers.get(normalized_tool_name)
         if handler is None:
             raise KeyError(normalized_tool_name)
 
-        raw_args = dict(arguments or {})
-        # LLM may send parameter names with different casing (e.g. "url" vs "Url").
-        # Build a case-insensitive mapping from the handler's actual parameter names.
-        try:
-            sig = inspect.signature(handler)
-            param_lookup = {name.lower(): name for name in sig.parameters}
-            mapped_args = {}
-            for key, value in raw_args.items():
-                canonical = param_lookup.get(key.lower())
-                if canonical is not None:
-                    mapped_args[canonical] = value
-                else:
-                    mapped_args[key] = value
-        except (ValueError, TypeError):
-            mapped_args = raw_args
-
-        return handler(**mapped_args)
+        return handler(**_map_handler_arguments(handler, arguments))
 
 
 def _load_json_file(file_path: str):
